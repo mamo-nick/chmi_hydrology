@@ -1,0 +1,50 @@
+{
+  "entity": {
+    "sensor": {
+      "water_level": {
+        "default": "mdi:waves-arrow-up"
+      },
+      "water_level_fc": {
+        "default": "mdi:waves-arrow-up"
+      },
+      "flow_rate": {
+        "default": "mdi:waves-arrow-right"
+      },
+      "flow_rate_fc": {
+        "default": "mdi:waves-arrow-right"
+      },
+      "water_temp": {
+        "default": "mdi:thermometer"
+      },
+      "last_measurement": {
+        "default": "mdi:clock"
+      },
+      "flood_status": {
+        "default": "mdi:water-check"
+      },
+      "flood_status_desc": {
+        "default": "mdi:water-check",
+        "state": {
+          "dry":    "mdi:water-off-outline",
+          "normal": "mdi:water-check",
+          "spa1":   "mdi:alert",
+          "spa2":   "mdi:alert-circle",
+          "spa3":   "mdi:alert-octagon",
+          "spa4":   "mdi:alert-octagon"
+        }
+      },
+      "trend": {
+        "default": "mdi:arrow-right",
+        "state": {
+          "falling_fast": "mdi:arrow-down-bold",
+          "falling":      "mdi:arrow-down",
+          "falling_slow": "mdi:arrow-bottom-right",
+          "steady":       "mdi:arrow-right",
+          "rising_slow":  "mdi:arrow-top-right",
+          "rising":       "mdi:arrow-up",
+          "rising_fast":  "mdi:arrow-up-bold"
+        }
+      }
+    }
+  }
+}

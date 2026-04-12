@@ -1,0 +1,81 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Search Station",
+        "description": "Enter river or town name ({count} stations available).",
+        "data": {
+          "search": "Search river or town"
+        }
+      },
+      "select": {
+        "title": "Select Stations",
+        "description": "Found {count} stations. Select one or more:",
+        "data": {
+          "stations": "Stations"
+        }
+      },
+      "confirm": {
+        "title": "Confirm",
+        "description": "The following stations will be added:\n{stations}",
+        "data": {}
+      }
+    },
+    "error": {
+      "search_too_short": "Enter at least 2 characters.",
+      "no_results": "No station found. Try a different name.",
+      "no_station_selected": "Select at least one station."
+    },
+    "abort": {
+      "cannot_fetch_stations": "Failed to connect to CHMI API."
+    }
+  },
+  "entity": {
+    "sensor": {
+      "water_level": {
+        "name": "Water Level"
+      },
+      "water_level_fc": {
+        "name": "Water Level FC"
+      },
+      "flow_rate": {
+        "name": "Flow Rate"
+      },
+      "flow_rate_fc": {
+        "name": "Flow Rate FC"
+      },
+      "water_temp": {
+        "name": "Water Temp"
+      },
+      "last_measurement": {
+        "name": "Last Measurement"
+      },
+      "flood_status": {
+        "name": "Flood Status"
+      },
+      "flood_status_desc": {
+        "name": "Flood Status Desc",
+        "state": {
+          "dry": "Drought",
+          "normal": "Normal",
+          "spa1": "SPA1 – Watch",
+          "spa2": "SPA2 – Advisory",
+          "spa3": "SPA3 – Warning",
+          "spa4": "SPA4 – Emergency"
+        }
+      },
+      "trend": {
+        "name": "Trend",
+        "state": {
+          "falling_fast": "Falling Fast",
+          "falling": "Falling",
+          "falling_slow": "Falling Slow",
+          "steady": "Steady",
+          "rising_slow": "Rising Slow",
+          "rising": "Rising",
+          "rising_fast": "Rising Fast"
+        }
+      }
+    }
+  }
+}

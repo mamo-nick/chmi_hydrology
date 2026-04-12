@@ -1,0 +1,81 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Vyhledání stanice",
+        "description": "Zadej název řeky nebo obce ({count} stanic k dispozici).",
+        "data": {
+          "search": "Hledej řeku nebo obec"
+        }
+      },
+      "select": {
+        "title": "Výběr stanic",
+        "description": "Nalezeno {count} stanic. Vyber jednu nebo více:",
+        "data": {
+          "stations": "Stanice"
+        }
+      },
+      "confirm": {
+        "title": "Potvrzení",
+        "description": "Budou přidány tyto stanice:\n{stations}",
+        "data": {}
+      }
+    },
+    "error": {
+      "search_too_short": "Zadej alespoň 2 znaky.",
+      "no_results": "Žádná stanice nenalezena. Zkus jiný název.",
+      "no_station_selected": "Vyber alespoň jednu stanici."
+    },
+    "abort": {
+      "cannot_fetch_stations": "Nepodařilo se připojit k ČHMÚ API."
+    }
+  },
+  "entity": {
+    "sensor": {
+      "water_level": {
+        "name": "Vodní stav"
+      },
+      "water_level_fc": {
+        "name": "Předpověď vodního stavu"
+      },
+      "flow_rate": {
+        "name": "Průtok"
+      },
+      "flow_rate_fc": {
+        "name": "Předpověď průtoku"
+      },
+      "water_temp": {
+        "name": "Teplota vody"
+      },
+      "last_measurement": {
+        "name": "Čas měření"
+      },
+      "flood_status": {
+        "name": "Povodňový stav"
+      },
+      "flood_status_desc": {
+        "name": "Popis povodňového stavu",
+        "state": {
+          "dry": "Sucho",
+          "normal": "Normální stav",
+          "spa1": "1. SPA – Bdělost",
+          "spa2": "2. SPA – Pohotovost",
+          "spa3": "3. SPA – Ohrožení",
+          "spa4": "4. SPA – Katastrofa"
+        }
+      },
+      "trend": {
+        "name": "Tendence",
+        "state": {
+          "falling_fast": "Rychle klesající",
+          "falling": "Klesá",
+          "falling_slow": "Mírně klesající",
+          "steady": "Setrvalý stav",
+          "rising_slow": "Mírně stoupající",
+          "rising": "Stoupá",
+          "rising_fast": "Rychle stoupající"
+        }
+      }
+    }
+  }
+}

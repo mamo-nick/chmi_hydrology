@@ -1,0 +1,13 @@
+{
+  "domain": "chmi_hydrology",
+  "name": "ČHMÚ Hydrologie",
+  "version": "1.0.0",
+  "documentation": "https://github.com/morav/chmi_hydrology",
+  "issue_tracker": "https://github.com/morav/chmi_hydrology/issues",
+  "dependencies": [],
+  "codeowners": ["@morav"],
+  "requirements": [],
+  "integration_type": "integration",
+  "iot_class": "cloud_polling",
+  "config_flow": true
+}
