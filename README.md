@@ -36,12 +36,10 @@ Rozhraní integrace je lokalizované do ?eštiny, slovenštiny a angli?tiny.
 ### P?es HACS
 
 1. HACS ? **Integrace** ? ? ? **Vlastní repozitá?e**
-2. P?idej URL: `https://github.com/morav/chmi_hydrology`
+2. P?idej URL: `https://github.com/mamo-nick/chmi_hydrology`
 3. Kategorie: **Integrace**
 4. Nainstaluj **CHMI Hydrology**
 5. Restart Home Assistant
-
-> Pokud je tv?j fork pod jiným uživatelem na GitHubu, nahra? `morav` v URL v manifestu (`documentation` / `issue_tracker`) a v tomto README.
 
 ### Ru?n?
 

@@ -35,7 +35,7 @@ Supports Czech 🇨🇿, Slovak 🇸🇰 and English 🇬🇧 UI.
 ### Via HACS (recommended)
 
 1. Open HACS → Integrations → ⋮ → Custom repositories
-2. Add URL: `https://github.com/morav/chmi_hydrology`
+2. Add URL: `https://github.com/mamo-nick/chmi_hydrology`
 3. Category: Integration
 4. Install **CHMI Hydrology**
 5. Restart Home Assistant
