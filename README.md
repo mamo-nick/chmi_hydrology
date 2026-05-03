@@ -35,7 +35,7 @@ Podporuje češtinu 🇨🇿, slovenštinu 🇸🇰 a angličtinu 🇬🇧 v roz
 ### Přes HACS (doporučeno)
 
 1. Otevři HACS → Integrace → ⋮ → Vlastní repozitáře
-2. Přidej URL: `https://github.com/your-username/chmi_hydrology`
+2. Přidej URL: `https://github.com/mamo-nick/chmi_hydrology`
 3. Kategorie: Integrace
 4. Nainstaluj **CHMI Hydrology**
 5. Restartuj Home Assistant
