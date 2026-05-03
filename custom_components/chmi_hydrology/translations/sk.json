@@ -65,15 +65,15 @@
         }
       },
       "trend": {
-        "name": "Trend",
+        "name": "Tendencia",
         "state": {
-          "falling_fast": "Rýchlo klesá",
-          "falling": "Klesá",
-          "falling_slow": "Mierne klesá",
-          "steady": "Setrvalý",
-          "rising_slow": "Mierne stúpa",
-          "rising": "Stúpa",
-          "rising_fast": "Rýchlo stúpa"
+          "falling_fast": "Rýchlo klesajúci",
+          "falling": "Klesajúci",
+          "falling_slow": "Mierne klesajúci",
+          "steady": "Setrvalý stav",
+          "rising_slow": "Mierne stúpajúci",
+          "rising": "Stúpajúci",
+          "rising_fast": "Rýchlo stúpajúci"
         }
       }
     }

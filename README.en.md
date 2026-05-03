@@ -35,7 +35,7 @@ Supports Czech 🇨🇿, Slovak 🇸🇰 and English 🇬🇧 UI.
 ### Via HACS (recommended)
 
 1. Open HACS → Integrations → ⋮ → Custom repositories
-2. Add URL: `https://github.com/mamo-nick/chmi_hydrology`
+2. Add URL: `https://github.com/your-username/chmi_hydrology`
 3. Category: Integration
 4. Install **CHMI Hydrology**
 5. Restart Home Assistant
@@ -80,8 +80,6 @@ https://opendata.chmi.cz/hydrology/now/data/{station_id}.json
 
 Data is updated by CHMI every **10 minutes**. Field code reference: [Popis_kodu_now_a_recent.pdf](https://opendata.chmi.cz/hydrology/read_me/Popis_kodu_now_a_recent.pdf)
 
-**Note:** Flood thresholds and `SPA_TYP` are saved from metadata when you add the station. The integration does not re-fetch full metadata while running — if CHMI changes thresholds, re-add the station or reconfigure the entry.
-
 ---
 
 ## Entities
@@ -102,7 +100,7 @@ The CHMI API uses short codes (`tsConID`) to identify measurement types. This in
 | *(derived)* | `last_measurement` | `_last_measurement` | Last measurement time |
 | *(derived)* | `flood_status` | `_flood_status` | Flood status (numeric) |
 | *(derived)* | `flood_status_desc` | `_flood_status_desc` | Flood status (text) |
-| *(derived)* | `trend` | `_trend` | Water level / flow trend |
+| *(derived)* | `trend` | `_trend` | Water level trend |
 
 **Full entity ID format:** `sensor.{station_id_underscored}_{translation_key}`
 
@@ -119,9 +117,9 @@ sensor.0_203_1_039000_flood_status_desc
 sensor.0_203_1_039000_trend
 ```
 
-**unique_id format:** `chmi_hydrology_{station_id}_{tsConID}` for each CHMI time series (`H`, `Q`, `T`, `TH`, …). Derived sensors use `chmi_hydrology_{station_id}_{suffix}` with suffix `last_measurement`, `flood_status`, `flood_status_desc`, or `trend`.
+**unique_id format:** `chmi_hydrology_{station_id}_{translation_key}`
 
-Examples: `chmi_hydrology_0-203-1-039000_H` (water level); `chmi_hydrology_0-203-1-039000_T` vs `…_TH` when both temperature series exist. Suggested entity IDs for `T` / `TH` are `{station_id}_water_temp_t` and `{station_id}_water_temp_th`.
+Example: `chmi_hydrology_0-203-1-039000_water_level`
 
 > **Note on entity IDs:** The entity IDs listed above are **suggested** values only. You can rename them freely in the HA UI (**Settings → Integrations → device → entity → pencil icon**) and the change will survive restarts. HA tracks entities internally via `unique_id`, which is fixed and never changes.
 
@@ -139,7 +137,7 @@ These sensors are created **only if the station provides that measurement**. Not
 | `sensor.0_203_1_XXXXXX_flow_rate_fc` | `Q_F` | m³/s | Flow rate forecast |
 | `sensor.0_203_1_XXXXXX_water_temp` | `T` / `TH` | °C | Water temperature |
 
-Physical sensor values come directly from the CHMI time series data (`tsConID` field). The last value from the `tsData` array is used as the current reading. Each sensor also exposes `measured_at` (ISO timestamp) and `stream` (river name) as attributes.
+Physical sensor values come directly from the CHMI time series data (`tsConID` field). The last value from the `tsData` array is used as the current reading. Each sensor also exposes `measured_at` (ISO timestamp), `stream` (název toku) as an attribute.
 
 The `water_level` and `flow_rate` sensors additionally expose `latitude` and `longitude` attributes, enabling map card display.
 
@@ -237,8 +235,6 @@ Thresholds are in **cm** for H-type stations and **m³/s** for Q-type stations. 
 
 Combines measured history with forecast in a single graph. Flood stage thresholds are shown as horizontal reference lines.
 
-The **measured** series uses Home Assistant **history** (recorder) — the integration does not expose CHMI raw `tsData` as an entity attribute. The **forecast** series uses the `forecast` attribute on `water_level_fc` / `flow_rate_fc` sensors.
-
 ```yaml
 type: custom:apexcharts-card
 header:
@@ -261,6 +257,8 @@ series:
     name: Water Level
     stroke_width: 2
     color: "#0077b6"
+    data_generator: |
+      return entity.attributes.history.map(h => [new Date(h.dt).getTime(), h.value]);
   - entity: sensor.0_203_1_039000_water_level_fc
     name: Forecast
     stroke_width: 2
@@ -317,6 +315,8 @@ series:
     stroke_width: 2
     color: "#0077b6"
     unit: m³/s
+    data_generator: |
+      return entity.attributes.history.map(h => [new Date(h.dt).getTime(), h.value]);
   - entity: sensor.0_203_1_039000_flow_rate_fc
     name: Forecast
     stroke_width: 2
@@ -373,7 +373,7 @@ entities:
 
 ### 5. Multi-Station Comparison (ApexCharts)
 
-Compare water levels of multiple stations in one graph (uses HA history for each entity).
+Compare water levels of multiple stations in one graph.
 
 ```yaml
 type: custom:apexcharts-card
@@ -384,8 +384,12 @@ graph_span: 24h
 series:
   - entity: sensor.0_203_1_039000_water_level
     name: Dědina Mitrov
+    data_generator: |
+      return entity.attributes.history.map(h => [new Date(h.dt).getTime(), h.value]);
   - entity: sensor.0_203_1_037000_water_level
     name: Orlice Týniště
+    data_generator: |
+      return entity.attributes.history.map(h => [new Date(h.dt).getTime(), h.value]);
 ```
 
 The `water_level` and `flow_rate` sensors both expose `latitude` and `longitude` attributes, enabling native HA map card support. When both sensors of the same station are added to the map card, HA merges them into a single point. Clicking the point shows both values.
@@ -443,5 +447,3 @@ automation:
 ## License
 
 MIT License. Data provided by [CHMI](https://www.chmi.cz) under open data license.
-
-Technical architecture: [Architecture.md](Architecture.md).

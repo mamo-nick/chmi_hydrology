@@ -68,11 +68,11 @@
         "name": "Tendence",
         "state": {
           "falling_fast": "Rychle klesající",
-          "falling": "Klesá",
+          "falling": "Klesající",
           "falling_slow": "Mírně klesající",
           "steady": "Setrvalý stav",
           "rising_slow": "Mírně stoupající",
-          "rising": "Stoupá",
+          "rising": "Stoupající",
           "rising_fast": "Rychle stoupající"
         }
       }

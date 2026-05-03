@@ -2,7 +2,6 @@
 from __future__ import annotations
 
 import asyncio
-import json
 import logging
 from datetime import timedelta
 from typing import Any
@@ -59,12 +58,7 @@ class ChmiHydrologyCoordinator(DataUpdateCoordinator):
                     raise UpdateFailed(
                         f"Error fetching station {self.station_id}: HTTP {resp.status}"
                     )
-                try:
-                    raw = await resp.json(content_type=None)
-                except json.JSONDecodeError as err:
-                    raise UpdateFailed(
-                        f"Invalid JSON for station {self.station_id}"
-                    ) from err
+                raw = await resp.json(content_type=None)
         except asyncio.TimeoutError as err:
             raise UpdateFailed(f"Timeout fetching station {self.station_id}") from err
         except aiohttp.ClientError as err:
@@ -190,11 +184,7 @@ async def fetch_all_stations(hass: HomeAssistant) -> list[dict]:
             if resp.status != 200:
                 _LOGGER.error("Failed to fetch station metadata: HTTP %s", resp.status)
                 return []
-            try:
-                raw = await resp.json(content_type=None)
-            except json.JSONDecodeError:
-                _LOGGER.exception("Invalid JSON in station metadata response")
-                return []
+            raw = await resp.json(content_type=None)
     except asyncio.TimeoutError:
         _LOGGER.exception("Timeout fetching station metadata")
         return []
@@ -217,15 +207,7 @@ def _parse_stations(raw: dict) -> list[dict]:
 
         inner = raw["data"]["data"]
         headers = [h.strip() for h in inner["header"].split(",")]
-        ncols = len(headers)
         for row in inner["values"]:
-            if len(row) != ncols:
-                _LOGGER.warning(
-                    "Skipping station row: expected %s columns, got %s",
-                    ncols,
-                    len(row),
-                )
-                continue
             station = dict(zip(headers, row))
             stations.append(station)
     except (KeyError, TypeError) as err:

@@ -67,13 +67,13 @@
       "trend": {
         "name": "Trend",
         "state": {
-          "falling_fast": "Falling Fast",
+          "falling_fast": "Rapidly Falling",
           "falling": "Falling",
-          "falling_slow": "Falling Slow",
+          "falling_slow": "Slowly Falling",
           "steady": "Steady",
-          "rising_slow": "Rising Slow",
+          "rising_slow": "Slowly Rising",
           "rising": "Rising",
-          "rising_fast": "Rising Fast"
+          "rising_fast": "Rapidly Rising"
         }
       }
     }
