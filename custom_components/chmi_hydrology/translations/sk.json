@@ -8,6 +8,21 @@
           "search": "Hľadaj rieku alebo obec"
         }
       },
+      "user_nearby": {
+        "title": "Najbližšie stanice",
+        "description": "V okruhu {radius} km od domova nájdených {nearby_count} staníc. Nižšie môžeš hľadať ďalšie.",
+        "data": {
+          "nearby_stations": "Najbližšie stanice (predvolené)",
+          "search": "Hľadať ďalšie stanice (voliteľné)"
+        }
+      },
+      "search_select": {
+        "title": "Výber z výsledkov hľadania",
+        "description": "Nájdených {count} staníc. Vyber ktoré chceš pridať:",
+        "data": {
+          "stations": "Stanice"
+        }
+      },
       "select": {
         "title": "Výber staníc",
         "description": "Nájdených {count} staníc. Vyber jednu alebo viac:",
@@ -24,7 +39,8 @@
     "error": {
       "search_too_short": "Zadaj aspoň 2 znaky.",
       "no_results": "Žiadna stanica nenájdená. Skús iný názov.",
-      "no_station_selected": "Vyber aspoň jednu stanicu."
+      "no_station_selected": "Vyber aspoň jednu stanicu.",
+      "cannot_fetch_stations": "Nepodarilo sa pripojiť k ČHMÚ API."
     },
     "abort": {
       "cannot_fetch_stations": "Nepodarilo sa pripojiť k SHMÚ API."

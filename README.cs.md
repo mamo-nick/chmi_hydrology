@@ -54,9 +54,9 @@ Rozhraní integrace je vícejazyčné. K dispozici jsou překlady pro češtinu,
 
 1. Jdi do **Nastavení → Integrace → Přidat integraci**
 2. Vyhledej **CHMI Hydrology**
-3. Zadej název řeky nebo obce (např. `Labe`, `Vltava`, `Orlice`)
-4. Vyber jednu nebo více stanic z výsledků
-5. Potvrď — senzory se vytvoří automaticky
+3. Pokud máš v HA nastavenou polohu domova, nejbližší stanice (do 10 km) se zobrazí automaticky předvybrané
+4. Můžeš také vyhledat libovolnou stanici podle názvu řeky nebo obce
+5. Vyber jednu nebo více stanic a potvrď — senzory se vytvoří automaticky
 
 Pro přidání další stanice použij **Přidat záznam** na kartě integrace. Pro odebrání stanice otevři záznam a smaž ho.
 

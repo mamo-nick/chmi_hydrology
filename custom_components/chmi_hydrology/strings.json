@@ -8,6 +8,21 @@
           "search": "Search river or town"
         }
       },
+      "user_nearby": {
+        "title": "Nearby Stations",
+        "description": "Found {nearby_count} station(s) within {radius} km of your home location. You can also search for additional stations below.",
+        "data": {
+          "nearby_stations": "Nearby stations (pre-selected)",
+          "search": "Search for additional stations (optional)"
+        }
+      },
+      "search_select": {
+        "title": "Select from Search Results",
+        "description": "Found {count} stations. Select which to add:",
+        "data": {
+          "stations": "Stations"
+        }
+      },
       "select": {
         "title": "Select Stations",
         "description": "Found {count} stations. Select one or more:",
@@ -24,7 +39,8 @@
     "error": {
       "search_too_short": "Enter at least 2 characters.",
       "no_results": "No station found. Try a different name.",
-      "no_station_selected": "Select at least one station."
+      "no_station_selected": "Select at least one station.",
+      "cannot_fetch_stations": "Failed to connect to CHMI API."
     },
     "abort": {
       "cannot_fetch_stations": "Failed to connect to CHMI API."

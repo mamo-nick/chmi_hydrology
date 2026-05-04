@@ -54,9 +54,9 @@ The integration UI is available in multiple languages. Translations for English,
 
 1. Go to **Settings → Integrations → Add Integration**
 2. Search for **CHMI Hydrology**
-3. Enter a river or town name (e.g. `Elbe`, `Vltava`, `Orlice`)
-4. Select one or more stations from the results
-5. Confirm — sensors are created automatically
+3. If your HA home location is set, nearby stations (within 10 km) are shown pre-selected automatically
+4. You can also search for any station by river or town name
+5. Select one or more stations and confirm — sensors are created automatically
 
 To add another station use **Add entry** on the integration card. To remove a station open the entry and delete it.
 
