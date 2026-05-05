@@ -135,6 +135,14 @@ class ChmiHydrologyConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
         self._search_results: list[dict] = []
         self._selected_stations: list[dict] = []
 
+    def _already_configured_ids(self) -> set[str]:
+        """Return set of station IDs already configured in any entry."""
+        return {
+            s["objID"]
+            for entry in self.hass.config_entries.async_entries(DOMAIN)
+            for s in entry.data.get(CONF_STATIONS, [])
+        }
+
     async def async_step_user(
         self, user_input: dict[str, Any] | None = None
     ) -> FlowResult:
@@ -151,8 +159,11 @@ class ChmiHydrologyConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
             home_lat = self.hass.config.latitude
             home_lon = self.hass.config.longitude
             if home_lat and home_lon:
+                already_configured = self._already_configured_ids()
                 nearby = _get_nearby_stations(self._all_stations, home_lat, home_lon)
-                self._nearby_stations = nearby
+                self._nearby_stations = [
+                    s for s in nearby if s["objID"] not in already_configured
+                ]
                 # Calculate distances for display
                 for s in nearby:
                     try:
@@ -174,13 +185,15 @@ class ChmiHydrologyConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
                     errors["search"] = "search_too_short"
                 else:
                     nearby_ids = {s["objID"] for s in self._nearby_stations}
+                    already_configured = self._already_configured_ids()
                     self._search_results = [
                         s for s in self._all_stations
                         if (
                             query in s.get("STATION_NAME", "").lower()
                             or query in s.get("STREAM_NAME", "").lower()
                         )
-                        and s["objID"] not in nearby_ids  # exclude already shown nearby
+                        and s["objID"] not in nearby_ids
+                        and s["objID"] not in already_configured
                     ]
                     if not self._search_results and not nearby_selected:
                         errors["search"] = "no_results"
