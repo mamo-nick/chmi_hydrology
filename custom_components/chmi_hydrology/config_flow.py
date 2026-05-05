@@ -233,10 +233,8 @@ class ChmiHydrologyConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
         if self._nearby_stations:
             placeholders["nearby_count"] = str(len(self._nearby_stations))
 
-        step_id = "user_nearby" if self._nearby_stations else "user"
-
         return self.async_show_form(
-            step_id=step_id,
+            step_id="user",
             data_schema=vol.Schema(schema_fields),
             errors=errors,
             description_placeholders=placeholders,

@@ -2,15 +2,8 @@
   "config": {
     "step": {
       "user": {
-        "title": "Vyhledání stanice",
-        "description": "Zadej název řeky nebo obce ({count} stanic k dispozici).",
-        "data": {
-          "search": "Hledej řeku nebo obec"
-        }
-      },
-      "user_nearby": {
-        "title": "Nejbližší stanice",
-        "description": "V okruhu {radius} km od domova nalezeno {nearby_count} stanic(e). Níže můžeš vyhledat další.",
+        "title": "Přidat stanici",
+        "description": "Stanice do {radius} km od domova jsou předvybrány níže. Můžeš také vyhledat další stanice podle názvu řeky nebo obce.\n\nDostupných stanic celkem: {count}",
         "data": {
           "nearby_stations": "Nejbližší stanice (předvybrané)",
           "search": "Hledat další stanice (volitelné)"

@@ -2,15 +2,8 @@
   "config": {
     "step": {
       "user": {
-        "title": "Search Station",
-        "description": "Enter river or town name ({count} stations available).",
-        "data": {
-          "search": "Search river or town"
-        }
-      },
-      "user_nearby": {
-        "title": "Nearby Stations",
-        "description": "Found {nearby_count} station(s) within {radius} km of your home location. You can also search for additional stations below.",
+        "title": "Add Station",
+        "description": "Stations within {radius} km of your home are pre-selected below. You can also search for additional stations by river or town name.\n\nTotal available stations: {count}",
         "data": {
           "nearby_stations": "Nearby stations (pre-selected)",
           "search": "Search for additional stations (optional)"
