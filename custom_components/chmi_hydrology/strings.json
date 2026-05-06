@@ -30,7 +30,7 @@
       },
       "user_with_nearby": {
         "title": "Add Station",
-        "description": "Stations within {radius} km of your home are pre-selected. You can also search for additional stations below.\n\nTotal available: {count}",
+        "description": "Nearest stations to your home location are pre-selected. You can also search for additional stations below.\n\nTotal available: {count}",
         "data": {
           "nearby_stations": "Nearby stations (pre-selected)",
           "search": "Search by river or town name"

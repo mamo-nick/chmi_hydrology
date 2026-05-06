@@ -241,7 +241,6 @@ class ChmiHydrologyConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
         # Determine step description placeholders
         placeholders: dict[str, str] = {
             "count": str(len(self._all_stations)),
-            "radius": str(int(NEARBY_RADIUS_KM)),
             "nearby_count": str(len(self._nearby_stations)),
         }
 

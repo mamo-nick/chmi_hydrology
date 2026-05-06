@@ -30,7 +30,7 @@
       },
       "user_with_nearby": {
         "title": "Pridať stanicu",
-        "description": "Stanice do {radius} km od domova sú predvolené nižšie. Môžeš tiež hľadať ďalšie stanice.\n\nDostupných staníc: {count}",
+        "description": "Najbližšie stanice od domova sú predvolené nižšie. Môžeš tiež hľadať ďalšie stanice podľa názvu rieky alebo obce.\n\nDostupných staníc: {count}",
         "data": {
           "nearby_stations": "Najbližšie stanice (predvolené)",
           "search": "Hľadaj podľa názvu rieky alebo obce"
