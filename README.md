@@ -354,4 +354,4 @@ automation:
 
 MIT License. Data provided by [CHMI](https://www.chmi.cz) under open data license.
 
-Technical architecture: [Architecture.md](Architecture.md).
+For a detailed description of the integration structure, data flow and sensor logic see [Architecture.md](Architecture.md).

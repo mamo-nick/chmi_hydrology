@@ -8,6 +8,8 @@ body:
     attributes:
       value: |
         Thanks for taking the time to report a bug! Please fill in as much detail as possible.
+        
+        *Czech language is welcome / Můžete psát také česky.*
 
   - type: input
     id: integration_version
