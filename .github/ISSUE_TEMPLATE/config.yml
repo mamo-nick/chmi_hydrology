@@ -1,0 +1,5 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Discussions
+    url: https://github.com/mamo-nick/chmi_hydrology/discussions
+    about: For questions and general discussion, please use Discussions instead of Issues.
