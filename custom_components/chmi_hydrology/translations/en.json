@@ -3,10 +3,10 @@
     "step": {
       "user": {
         "title": "Add Station",
-        "description": "Stations within {radius} km of your home are pre-selected below. You can also search for additional stations by river or town name.\n\nTotal available stations: {count}",
+        "description": "Search for a station by river or town name ({count} stations available).",
         "data": {
           "nearby_stations": "Nearby stations (pre-selected)",
-          "search": "Search for additional stations (optional)"
+          "search": "Search by river or town name"
         }
       },
       "search_select": {
@@ -27,6 +27,14 @@
         "title": "Confirm",
         "description": "The following stations will be added:\n{stations}",
         "data": {}
+      },
+      "user_with_nearby": {
+        "title": "Add Station",
+        "description": "Stations within {radius} km of your home are pre-selected. You can also search for additional stations below.\n\nTotal available: {count}",
+        "data": {
+          "nearby_stations": "Nearby stations (pre-selected)",
+          "search": "Search by river or town name"
+        }
       }
     },
     "error": {

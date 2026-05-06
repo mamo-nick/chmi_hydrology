@@ -3,10 +3,10 @@
     "step": {
       "user": {
         "title": "Pridať stanicu",
-        "description": "Stanice do {radius} km od domova sú predvolené nižšie. Môžeš tiež hľadať ďalšie stanice podľa názvu rieky alebo obce.\n\nDostupných staníc celkom: {count}",
+        "description": "Vyhľadaj stanicu podľa názvu rieky alebo obce ({count} staníc k dispozícii).",
         "data": {
           "nearby_stations": "Najbližšie stanice (predvolené)",
-          "search": "Hľadať ďalšie stanice (voliteľné)"
+          "search": "Hľadaj podľa názvu rieky alebo obce"
         }
       },
       "search_select": {
@@ -27,6 +27,14 @@
         "title": "Potvrdenie",
         "description": "Budú pridané tieto stanice:\n{stations}",
         "data": {}
+      },
+      "user_with_nearby": {
+        "title": "Pridať stanicu",
+        "description": "Stanice do {radius} km od domova sú predvolené nižšie. Môžeš tiež hľadať ďalšie stanice.\n\nDostupných staníc: {count}",
+        "data": {
+          "nearby_stations": "Najbližšie stanice (predvolené)",
+          "search": "Hľadaj podľa názvu rieky alebo obce"
+        }
       }
     },
     "error": {

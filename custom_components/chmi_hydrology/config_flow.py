@@ -242,16 +242,21 @@ class ChmiHydrologyConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
         placeholders: dict[str, str] = {
             "count": str(len(self._all_stations)),
             "radius": str(int(NEARBY_RADIUS_KM)),
+            "nearby_count": str(len(self._nearby_stations)),
         }
-        if self._nearby_stations:
-            placeholders["nearby_count"] = str(len(self._nearby_stations))
 
         return self.async_show_form(
-            step_id="user",
+            step_id="user_with_nearby" if self._nearby_stations else "user",
             data_schema=vol.Schema(schema_fields),
             errors=errors,
             description_placeholders=placeholders,
         )
+
+    async def async_step_user_with_nearby(
+        self, user_input: dict[str, Any] | None = None
+    ) -> FlowResult:
+        """Alias for user step when nearby stations are available."""
+        return await self.async_step_user(user_input)
 
     async def async_step_search_select(
         self, user_input: dict[str, Any] | None = None
