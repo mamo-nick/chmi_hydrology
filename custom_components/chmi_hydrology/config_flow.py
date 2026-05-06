@@ -271,11 +271,22 @@ class ChmiHydrologyConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
             else:
                 return await self.async_step_confirm()
 
+        # Show already selected nearby stations in description
+        nearby_names = ""
+        if self._selected_stations:
+            nearby_names = "\n".join(
+                f"• {s['STREAM_NAME']} {s['STATION_NAME']}"
+                for s in self._selected_stations
+            )
+
         return self.async_show_form(
             step_id="search_select",
             data_schema=_multi_select_schema(self._search_results),
             errors=errors,
-            description_placeholders={"count": str(len(self._search_results))},
+            description_placeholders={
+                "count": str(len(self._search_results)),
+                "nearby_selected": nearby_names,
+            },
         )
 
     async def async_step_confirm(

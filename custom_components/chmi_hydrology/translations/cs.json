@@ -11,7 +11,7 @@
       },
       "search_select": {
         "title": "Výběr z výsledků hledání",
-        "description": "Nalezeno {count} stanic. Vyber které chceš přidat:",
+        "description": "Nalezeno {count} dalších stanic. Vyber které chceš přidat.\n\nJiž vybrané z nejbližších:\n{nearby_selected}",
         "data": {
           "stations": "Stanice"
         }

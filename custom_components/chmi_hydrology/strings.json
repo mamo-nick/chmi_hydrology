@@ -11,7 +11,7 @@
       },
       "search_select": {
         "title": "Select from Search Results",
-        "description": "Found {count} stations. Select which to add:",
+        "description": "Found {count} additional stations. Select which to add.\n\nAlready selected from nearby:\n{nearby_selected}",
         "data": {
           "stations": "Stations"
         }
