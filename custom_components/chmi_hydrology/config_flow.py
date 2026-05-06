@@ -297,18 +297,27 @@ class ChmiHydrologyConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
     async def async_step_confirm(
         self, user_input: dict[str, Any] | None = None
     ) -> FlowResult:
-        """Step 3 – confirm and save."""
+        """Step 3 – confirm and save. Creates one config entry per station."""
         if user_input is not None:
+            # Create one entry per station
+            # First station creates entry via async_create_entry
+            # Remaining stations are created via async_init_flow
+            first = self._selected_stations[0]
+            remaining = self._selected_stations[1:]
+
+            # Schedule remaining stations as separate entries
+            for station in remaining:
+                self.hass.async_create_task(
+                    self.hass.config_entries.flow.async_init(
+                        DOMAIN,
+                        context={"source": "import"},
+                        data={CONF_STATIONS: [_station_to_config(station)]},
+                    )
+                )
+
             return self.async_create_entry(
-                title=", ".join(
-                    f"{s['STREAM_NAME']} {s['STATION_NAME']}"
-                    for s in self._selected_stations
-                ),
-                data={
-                    CONF_STATIONS: [
-                        _station_to_config(s) for s in self._selected_stations
-                    ]
-                },
+                title=f"{first['STREAM_NAME']} {first['STATION_NAME']}",
+                data={CONF_STATIONS: [_station_to_config(first)]},
             )
 
         names = "\n".join(
@@ -319,4 +328,13 @@ class ChmiHydrologyConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
             step_id="confirm",
             data_schema=vol.Schema({}),
             description_placeholders={"stations": names},
+        )
+
+    async def async_step_import(
+        self, user_input: dict[str, Any]
+    ) -> FlowResult:
+        """Handle import of a single station (used internally for multi-station creation)."""
+        return self.async_create_entry(
+            title=f"{user_input[CONF_STATIONS][0]['STREAM_NAME']} {user_input[CONF_STATIONS][0]['STATION_NAME']}",
+            data=user_input,
         )
