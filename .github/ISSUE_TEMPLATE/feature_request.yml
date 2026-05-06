@@ -8,6 +8,8 @@ body:
     attributes:
       value: |
         Thanks for suggesting an improvement! Please describe your idea in detail.
+        
+        *Czech language is welcome / Můžete psát také česky.*
 
   - type: textarea
     id: summary

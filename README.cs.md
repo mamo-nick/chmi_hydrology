@@ -354,4 +354,4 @@ automation:
 
 MIT License. Data poskytuje [ČHMÚ](https://www.chmi.cz) v rámci otevřených dat.
 
-Technický popis architektury: [Architecture.md](Architecture.md).
+Technický popis architektury, datového toku a logiky senzorů: [Architecture.md](Architecture.md).
