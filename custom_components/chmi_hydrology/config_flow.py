@@ -298,9 +298,6 @@ class ChmiHydrologyConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
     ) -> FlowResult:
         """Step 3 – confirm and save. Creates one config entry per station."""
         if user_input is not None:
-            # Create one entry per station
-            # First station creates entry via async_create_entry
-            # Remaining stations are created via async_init_flow
             first = self._selected_stations[0]
             remaining = self._selected_stations[1:]
 
@@ -313,6 +310,10 @@ class ChmiHydrologyConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
                         data={CONF_STATIONS: [_station_to_config(station)]},
                     )
                 )
+
+            # Set unique_id to prevent duplicate entries for same station
+            await self.async_set_unique_id(first["objID"])
+            self._abort_if_unique_id_configured()
 
             return self.async_create_entry(
                 title=f"{first['STREAM_NAME']} {first['STATION_NAME']}",
@@ -333,7 +334,13 @@ class ChmiHydrologyConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
         self, user_input: dict[str, Any]
     ) -> FlowResult:
         """Handle import of a single station (used internally for multi-station creation)."""
+        station = user_input[CONF_STATIONS][0]
+
+        # Set unique_id to prevent duplicate entries for same station
+        await self.async_set_unique_id(station["objID"])
+        self._abort_if_unique_id_configured()
+
         return self.async_create_entry(
-            title=f"{user_input[CONF_STATIONS][0]['STREAM_NAME']} {user_input[CONF_STATIONS][0]['STATION_NAME']}",
+            title=f"{station['STREAM_NAME']} {station['STATION_NAME']}",
             data=user_input,
         )
