@@ -4,7 +4,7 @@
   "version": "0.9.0",
   "documentation": "https://github.com/mamo-nick/chmi_hydrology",
   "issue_tracker": "https://github.com/mamo-nick/chmi_hydrology/issues",
-  "dependencies": [],
+  "dependencies": ["sensor"],
   "codeowners": [
     "@mamo-nick"
   ],
