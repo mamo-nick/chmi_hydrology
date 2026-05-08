@@ -308,7 +308,8 @@ class ChmiHydrologyConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
                         DOMAIN,
                         context={"source": "import"},
                         data={CONF_STATIONS: [_station_to_config(station)]},
-                    )
+                    ),
+                    name=f"chmi_hydrology_import_{station['objID']}",
                 )
 
             # Set unique_id to prevent duplicate entries for same station
