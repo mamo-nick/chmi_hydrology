@@ -1,7 +1,6 @@
 """Sensor platform for CHMI Hydrology integration."""
 from __future__ import annotations
 
-import asyncio
 import logging
 from datetime import datetime
 from typing import Any
@@ -35,10 +34,6 @@ async def async_setup_entry(
 ) -> None:
     """Set up sensors for all configured stations."""
     coordinators: dict[str, ChmiHydrologyCoordinator] = hass.data[DOMAIN][entry.entry_id]
-
-    await asyncio.gather(
-        *[c.async_config_entry_first_refresh() for c in coordinators.values()]
-    )
 
     entities: list[SensorEntity] = []
 
