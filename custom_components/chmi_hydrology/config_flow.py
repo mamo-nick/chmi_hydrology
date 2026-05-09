@@ -306,10 +306,10 @@ class ChmiHydrologyConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
                 self.hass.async_create_task(
                     self.hass.config_entries.flow.async_init(
                         DOMAIN,
-                        context={"source": "import"},
+                        context={"source": config_entries.SOURCE_USER},
                         data={CONF_STATIONS: [_station_to_config(station)]},
                     ),
-                    name=f"chmi_hydrology_import_{station['objID']}",
+                    name=f"chmi_hydrology_create_{station['objID']}",
                 )
 
             # Set unique_id to prevent duplicate entries for same station
@@ -331,10 +331,10 @@ class ChmiHydrologyConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
             description_placeholders={"stations": names},
         )
 
-    async def async_step_import(
+    async def async_step_user_additional(
         self, user_input: dict[str, Any]
     ) -> FlowResult:
-        """Handle import of a single station (used internally for multi-station creation)."""
+        """Handle creation of additional stations (used internally for multi-station creation)."""
         station = user_input[CONF_STATIONS][0]
 
         # Set unique_id to prevent duplicate entries for same station
