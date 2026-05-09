@@ -17,8 +17,6 @@ PLATFORMS = ["sensor"]
 
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     """Set up integration from a config entry."""
-    hass.data.setdefault(DOMAIN, {})
-
     stations = entry.data.get(CONF_STATIONS, [])
     coordinators: dict[str, ChmiHydrologyCoordinator] = {}
 
@@ -34,12 +32,13 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
         coordinators[station_id] = coordinator
         _LOGGER.debug("Initializing station: %s (%s)", station["STATION_NAME"], station_id)
 
-    hass.data[DOMAIN][entry.entry_id] = coordinators
-
-    # Perform first refresh for all coordinators in parallel before setting up platforms
+    # First refresh before storing data and setting up platforms
     await asyncio.gather(
         *[c.async_config_entry_first_refresh() for c in coordinators.values()]
     )
+
+    hass.data.setdefault(DOMAIN, {})
+    hass.data[DOMAIN][entry.entry_id] = coordinators
 
     await hass.config_entries.async_forward_entry_setups(entry, PLATFORMS)
 

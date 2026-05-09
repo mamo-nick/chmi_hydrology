@@ -313,7 +313,7 @@ class ChmiHydrologyConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
                 )
 
             # Set unique_id to prevent duplicate entries for same station
-            await self.async_set_unique_id(f"chmi_{first['objID']}")
+            await self.async_set_unique_id(first["objID"])
             self._abort_if_unique_id_configured()
 
             return self.async_create_entry(
@@ -338,7 +338,7 @@ class ChmiHydrologyConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
         station = user_input[CONF_STATIONS][0]
 
         # Set unique_id to prevent duplicate entries for same station
-        await self.async_set_unique_id(f"chmi_{station['objID']}")
+        await self.async_set_unique_id(station["objID"])
         self._abort_if_unique_id_configured()
 
         return self.async_create_entry(
