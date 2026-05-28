@@ -10,6 +10,15 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ---
 
+## [0.9.2] – 2026-05-28
+
+### Fixed
+- Integration card now correctly appears in HA integrations dashboard
+- Changed `integration_type` from `integration` to `hub` in `manifest.json`
+- Removed `sensor` from `dependencies` in `manifest.json`
+
+---
+
 ## [0.9.1] – 2026-05-28
 
 ### Fixed

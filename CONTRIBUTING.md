@@ -6,11 +6,11 @@ Thank you for your interest in contributing! Here is how you can help.
 
 ## Reporting Bugs
 
-Use the [Bug report](.github/ISSUE_TEMPLATE/bug_report.md) issue template. Please include logs from **Settings → System → Logs** filtered by `chmi_hydrology`.
+Use the [Bug report](.github/ISSUE_TEMPLATE/bug_report.yml) issue template. Please include logs from **Settings → System → Logs** filtered by `chmi_hydrology`.
 
 ## Suggesting Features
 
-Use the [Feature request](.github/ISSUE_TEMPLATE/feature_request.md) issue template.
+Use the [Feature request](.github/ISSUE_TEMPLATE/feature_request.yml) issue template.
 
 ## Contributing Code
 

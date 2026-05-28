@@ -134,7 +134,7 @@ Each entity has two identifiers:
 | Identifier | Format | Example | Purpose |
 |---|---|---|---|
 | `unique_id` | `chmi_hydrology_{station_id}_{translation_key}` | `chmi_hydrology_0-203-1-039000_water_level` | Internal HA tracking, never changes |
-| `entity_id` | `sensor.{station_slug}_{translation_key}` | `sensor.0_203_1_039000_water_level` | User-visible, can be renamed |
+| `entity_id` | `sensor.{station_slug}_{translation_key}` | `sensor.dedina_mitrov_vodni_stav` | User-visible, can be renamed |
 
 `entity_id` is suggested via `_attr_suggested_object_id`. User renames survive restarts because HA tracks entities by `unique_id`.
 
