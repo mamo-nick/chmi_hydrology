@@ -185,167 +185,294 @@ hours_to_show: 0
 
 ## Karty dashboardu
 
-> **Poznámka:** Níže uvedené příklady grafů vyžadují [ApexCharts Card](https://github.com/RomRider/apexcharts-card), který je nutno **samostatně nainstalovat přes HACS**.
+> **Poznámka:** Příklady grafů vyžadují [ApexCharts Card](https://github.com/RomRider/apexcharts-card) a karty stavu/tendence vyžadují [Mushroom Cards](https://github.com/piitaya/lovelace-mushroom). Obojí je nutno **samostatně nainstalovat přes HACS**.
 
-### 1. Vodní stav – historie + předpověď
+> **Entity ID:** Nahraď entity ID v příkladech svými skutečnými entity ID. Najdeš je ve **Vývojářské nástroje → Stavy** filtrací podle názvu řeky nebo stanice.
 
-Naměřená křivka využívá **historii HA (recorder)**. Předpověď se bere z atributu `forecast` senzoru `water_level_fc`.
+### 1. Vodní stav + průtok
+
+Kombinovaný graf se dvěma osami — vodní stav (levá osa, cm) a průtok (pravá osa, m³/s) s anotacemi SPA prahů.
+
+![Graf vodního stavu a průtoku](docs/images/dashboard_water_level_flow.png)
 
 ```yaml
 type: custom:apexcharts-card
 header:
   show: true
-  title: Stanice – Vodní stav
-graph_span: 48h
-span:
-  start: hour
-  offset: "-24h"
-now:
-  show: true
-  label: Nyní
+  title: Název stanice
+  show_states: true
+  colorize_states: true
+graph_span: 24h
 apex_config:
-  stroke:
-    dashArray:
-      - 0
-      - 6
+  annotations:
+    yaxis:
+      - "y": 46
+        borderColor: "#ff0000"
+        strokeWidth: 1
+        label:
+          text: ↓ Sucho / Normální stav
+          position: right
+          style:
+            colors: "#fff"
+            background: "#a67b5b"
+      - "y": 320
+        borderColor: "#4caf50"
+        strokeWidth: 1
+        label:
+          text: ↑ 1. SPA
+          position: right
+          style:
+            colors: "#fff"
+            background: "#4caf50"
+      - "y": 350
+        borderColor: "#ffd600"
+        strokeWidth: 1
+        label:
+          text: ↑ 2. SPA
+          position: right
+          style:
+            colors: "#000"
+            background: "#ffd600"
+      - "y": 370
+        borderColor: "#f44336"
+        strokeWidth: 1
+        label:
+          text: ↑ 3. SPA
+          position: right
+          style:
+            colors: "#fff"
+            background: "#f44336"
+      - "y": 457
+        borderColor: "#b71c1c"
+        strokeWidth: 1
+        label:
+          text: ↑ 4. SPA
+          position: right
+          style:
+            colors: "#fff"
+            background: "#b71c1c"
+  yaxis:
+    - id: stav
+      min: 0
+    - id: prutok
+      opposite: true
+      min: 0
 series:
   - entity: sensor.TVOJE_ENTITA_VODNI_STAV
-    name: Vodní stav
+    name: Stav
+    unit: cm
     stroke_width: 2
-    color: "#0077b6"
-  - entity: sensor.TVOJE_ENTITA_VODNI_STAV_FC
-    name: Předpověď
-    stroke_width: 2
-    color: "#90e0ef"
-    data_generator: |
-      return entity.attributes.forecast.map(h => [new Date(h.dt).getTime(), h.value]);
-yaxis:
-  - min: ~0
-    apex_config:
-      plotLines:
-        - value: 165
-          color: "#ffd60a"
-          width: 1
-          label:
-            text: 1. SPA
-        - value: 200
-          color: "#ff9500"
-          width: 1
-          label:
-            text: 2. SPA
-        - value: 220
-          color: "#ff3a30"
-          width: 1
-          label:
-            text: 3. SPA
-```
-
-> Nahraď `165`, `200`, `220` skutečnými prahy SPA z atributů senzoru `flood_status`. Entity ID najdeš ve **Vývojářské nástroje → Stavy**.
-
----
-
-### 2. Průtok – historie + předpověď
-
-```yaml
-type: custom:apexcharts-card
-header:
-  show: true
-  title: Stanice – Průtok
-graph_span: 48h
-span:
-  start: hour
-  offset: "-24h"
-now:
-  show: true
-  label: Nyní
-apex_config:
-  stroke:
-    dashArray:
-      - 0
-      - 6
-series:
+    type: area
+    opacity: 0.2
+    color: "#3498db"
+    yaxis_id: stav
   - entity: sensor.TVOJE_ENTITA_PRUTOK
     name: Průtok
-    stroke_width: 2
-    color: "#0077b6"
     unit: m³/s
-  - entity: sensor.TVOJE_ENTITA_PRUTOK_FC
-    name: Předpověď
+    type: line
     stroke_width: 2
-    color: "#90e0ef"
-    unit: m³/s
-    data_generator: |
-      return entity.attributes.forecast.map(h => [new Date(h.dt).getTime(), h.value]);
+    color: "#2ecc71"
+    yaxis_id: prutok
+```
+
+> Nahraď hodnoty SPA prahů (`46`, `320`, `350`, `370`, `457`) hodnotami své stanice. Najdeš je v atributech senzoru `Povodňový stav` pod **Nastavení → Zařízení → entita → Podrobnosti**:
+
+![Atributy povodňového stavu](docs/images/flood_status_attributes.png)
+
+---
+
+### 2. Povodňový stupeň + tendence
+
+Dvě karty [Mushroom Cards](https://github.com/piitaya/lovelace-mushroom) zobrazené vedle sebe.
+
+![Povodňový stupeň a tendence](docs/images/dashboard_flood_status_trend.png)
+
+**Karta povodňového stupně** — barva ikony odpovídá oficiálnímu barevnému označení ČHMÚ: světle modrá = normální stav, zelená = 1. SPA, žlutá = 2. SPA, červená = 3. SPA, tmavě červená = 4. SPA.
+
+```yaml
+type: custom:mushroom-template-card
+primary: Povodňový stupeň
+secondary: >-
+  {{ state_translated('sensor.TVOJE_ENTITA_POVODNOVYSTAV_POPIS') }}
+  ({{ states('sensor.TVOJE_ENTITA_VODNI_STAV') }} cm)
+icon: mdi:waves
+icon_color: >-
+  {% set stav = states('sensor.TVOJE_ENTITA_POVODNOVYSTAV') | int %}
+  {% if stav == -1 %}#5b9bd5
+  {% elif stav == 0 %}#90caf9
+  {% elif stav == 1 %}#4caf50
+  {% elif stav == 2 %}#ffd600
+  {% elif stav == 3 %}#f44336
+  {% elif stav == 4 %}#b71c1c
+  {% else %}#9e9e9e{% endif %}
+fill_container: true
+```
+
+**Karta tendence** — ikona a barva se mění dynamicky podle aktuální tendence.
+
+```yaml
+type: custom:mushroom-template-card
+primary: Tendence
+secondary: >-
+  {{ state_translated('sensor.TVOJE_ENTITA_TENDENCE') }}
+  ({{ state_attr('sensor.TVOJE_ENTITA_TENDENCE', 'difference') }} cm)
+icon: >-
+  {% set stav = states('sensor.TVOJE_ENTITA_TENDENCE') %}
+  {% if stav == 'falling_fast' %}mdi:arrow-down-bold
+  {% elif stav == 'falling' %}mdi:arrow-down
+  {% elif stav == 'falling_slow' %}mdi:arrow-bottom-right
+  {% elif stav == 'steady' %}mdi:arrow-right
+  {% elif stav == 'rising_slow' %}mdi:arrow-top-right
+  {% elif stav == 'rising' %}mdi:arrow-up
+  {% elif stav == 'rising_fast' %}mdi:arrow-up-bold
+  {% else %}mdi:minus{% endif %}
+icon_color: >-
+  {% set stav = states('sensor.TVOJE_ENTITA_TENDENCE') %}
+  {% if stav == 'falling_fast' %}#b71c1c
+  {% elif stav == 'falling' %}#f44336
+  {% elif stav == 'falling_slow' %}#90caf9
+  {% elif stav == 'steady' %}#4caf50
+  {% elif stav == 'rising_slow' %}#ffd600
+  {% elif stav == 'rising' %}#ff9800
+  {% elif stav == 'rising_fast' %}#b71c1c
+  {% else %}#9e9e9e{% endif %}
+fill_container: true
 ```
 
 ---
 
-### 3. Povodňový stav – ukazatel
+### 3. Přehled stanice
+
+Vertical stack Mushroom karet s kompletním přehledem stanice.
+
+![Přehled stanice](docs/images/dashboard_station_overview.png)
+
+> **Poznámka:** Pokud stanice neposkytuje teplotu vody, odstraň kartu teploty z horizontal-stacku.
 
 ```yaml
-type: gauge
-entity: sensor.TVOJE_ENTITA_POVODNOVYSTAV
-name: Povodňový stav
-min: -1
-max: 4
-severity:
-  green: -1
-  yellow: 1
-  red: 3
-needle: true
-```
-
----
-
-### 4. Přehled stanice
-
-```yaml
-type: entities
 title: Název stanice
+type: vertical-stack
+cards:
+  - type: horizontal-stack
+    cards:
+      - type: custom:mushroom-template-card
+        primary: Čas měření
+        secondary: >-
+          {{ states('sensor.TVOJE_ENTITA_CAS_MERENI') | as_timestamp
+          | timestamp_custom('%d.%m.%Y %H:%M') }}
+        icon: mdi:clock
+        icon_color: "#9e9e9e"
+        fill_container: true
+      - type: custom:mushroom-template-card
+        primary: Teplota vody
+        secondary: "{{ states('sensor.TVOJE_ENTITA_TEPLOTA') }} °C"
+        icon: mdi:thermometer
+        icon_color: "#ff9800"
+        fill_container: true
+  - type: horizontal-stack
+    cards:
+      - type: custom:mushroom-template-card
+        primary: Vodní stav
+        secondary: "{{ states('sensor.TVOJE_ENTITA_VODNI_STAV') }} cm"
+        icon: mdi:waves-arrow-up
+        icon_color: "#0077b6"
+        fill_container: true
+      - type: custom:mushroom-template-card
+        primary: Průtok
+        secondary: "{{ states('sensor.TVOJE_ENTITA_PRUTOK') }} m³/s"
+        icon: mdi:waves-arrow-right
+        icon_color: "#2ecc71"
+        fill_container: true
+  - type: horizontal-stack
+    cards:
+      - type: custom:mushroom-template-card
+        primary: Povodňový stupeň
+        secondary: >-
+          {{ state_translated('sensor.TVOJE_ENTITA_POVODNOVYSTAV_POPIS') }}
+          ({{ states('sensor.TVOJE_ENTITA_VODNI_STAV') }} cm)
+        icon: mdi:waves
+        icon_color: >-
+          {% set stav = states('sensor.TVOJE_ENTITA_POVODNOVYSTAV') | int %}
+          {% if stav == -1 %}#5b9bd5
+          {% elif stav == 0 %}#90caf9
+          {% elif stav == 1 %}#4caf50
+          {% elif stav == 2 %}#ffd600
+          {% elif stav == 3 %}#f44336
+          {% elif stav == 4 %}#b71c1c
+          {% else %}#9e9e9e{% endif %}
+        fill_container: true
+      - type: custom:mushroom-template-card
+        primary: Tendence
+        secondary: >-
+          {{ state_translated('sensor.TVOJE_ENTITA_TENDENCE') }}
+          ({{ state_attr('sensor.TVOJE_ENTITA_TENDENCE', 'difference') }} cm)
+        icon: >-
+          {% set stav = states('sensor.TVOJE_ENTITA_TENDENCE') %}
+          {% if stav == 'falling_fast' %}mdi:arrow-down-bold
+          {% elif stav == 'falling' %}mdi:arrow-down
+          {% elif stav == 'falling_slow' %}mdi:arrow-bottom-right
+          {% elif stav == 'steady' %}mdi:arrow-right
+          {% elif stav == 'rising_slow' %}mdi:arrow-top-right
+          {% elif stav == 'rising' %}mdi:arrow-up
+          {% elif stav == 'rising_fast' %}mdi:arrow-up-bold
+          {% else %}mdi:minus{% endif %}
+        icon_color: >-
+          {% set stav = states('sensor.TVOJE_ENTITA_TENDENCE') %}
+          {% if stav == 'falling_fast' %}#b71c1c
+          {% elif stav == 'falling' %}#f44336
+          {% elif stav == 'falling_slow' %}#90caf9
+          {% elif stav == 'steady' %}#4caf50
+          {% elif stav == 'rising_slow' %}#ffd600
+          {% elif stav == 'rising' %}#ff9800
+          {% elif stav == 'rising_fast' %}#b71c1c
+          {% else %}#9e9e9e{% endif %}
+        fill_container: true
+```
+
+---
+
+### 4. Mapa
+
+Senzory `water_level` a `flow_rate` se automaticky zobrazují na mapě HA. Pro samostatnou mapovou kartu:
+
+![Mapa stanice](docs/images/dashboard_map.png)
+
+```yaml
+type: map
 entities:
   - entity: sensor.TVOJE_ENTITA_VODNI_STAV
+    name: Stanice – Vodní stav
   - entity: sensor.TVOJE_ENTITA_PRUTOK
-  - entity: sensor.TVOJE_ENTITA_TEPLOTA
-  - entity: sensor.TVOJE_ENTITA_TENDENCE
-  - entity: sensor.TVOJE_ENTITA_POVODNOVYSTAV_POPIS
-  - entity: sensor.TVOJE_ENTITA_CAS_MERENI
+    name: Stanice – Průtok
+hours_to_show: 0
+theme_mode: auto
 ```
 
 ---
 
-### 5. Porovnání více stanic
+## Varování – automatizace
+
+Automatizace posílá notifikaci při dosažení 1. SPA (bdělost). Trigger `numeric_state` se spustí **pouze jednou** při překročení hranice — neopakuje se dokud hodnota zůstane nad ní.
+
+> Obdobně lze nastavit varování pro 2. SPA (`above: 1`), 3. SPA (`above: 2`) a 4. SPA (`above: 3`).
+
+> Nahraď `notify.notify` svou konkrétní notifikační službou, např. `notify.mobile_app_tvuj_telefon`.
 
 ```yaml
-type: custom:apexcharts-card
-header:
-  show: true
-  title: Sledování řek
-graph_span: 24h
-series:
-  - entity: sensor.TVOJE_ENTITA_STANICE1_VODNI_STAV
-    name: Stanice 1
-  - entity: sensor.TVOJE_ENTITA_STANICE2_VODNI_STAV
-    name: Stanice 2
-```
-
----
-
-## Příklad automatizace
-
-```yaml
-automation:
-  - alias: "Povodňový alert"
-    trigger:
-      - platform: numeric_state
-        entity_id: sensor.TVOJE_ENTITA_POVODNOVYSTAV
-        above: 1
-    action:
-      - service: notify.mobile_app
-        data:
-          message: >
-            Povodňový alert! Stanice dosáhla stupně
-            {{ states('sensor.TVOJE_ENTITA_POVODNOVYSTAV_POPIS') }}.
-            Vodní stav: {{ states('sensor.TVOJE_ENTITA_VODNI_STAV') }} cm
+alias: "Varování – Stanice 1. SPA"
+triggers:
+  - entity_id: sensor.TVOJE_ENTITA_POVODNOVYSTAV
+    above: 0
+    trigger: numeric_state
+actions:
+  - data:
+      title: "⚠️ Varování – Stanice 1. SPA (bdělost)"
+      message: >
+        Dosažen 1. stupeň povodňové aktivity (bdělost)!
+        Vodní stav: {{ states('sensor.TVOJE_ENTITA_VODNI_STAV') }} cm
+        Průtok: {{ states('sensor.TVOJE_ENTITA_PRUTOK') }} m³/s
+        Tendence: {{ state_translated('sensor.TVOJE_ENTITA_TENDENCE') }}
+    action: notify.notify
 ```
 
 ---

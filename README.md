@@ -185,167 +185,294 @@ hours_to_show: 0
 
 ## Dashboard Cards
 
-> **Note:** The following graph examples use [ApexCharts Card](https://github.com/RomRider/apexcharts-card) which must be **installed separately via HACS** before use.
+> **Note:** Graph examples use [ApexCharts Card](https://github.com/RomRider/apexcharts-card) and status/tendency cards use [Mushroom Cards](https://github.com/piitaya/lovelace-mushroom). Both must be **installed separately via HACS** before use.
 
-### 1. Water Level – History + Forecast
+> **Entity IDs:** Replace entity IDs in examples with your actual entity IDs. Find them in **Developer Tools → States** by filtering for your river or station name.
 
-The measured curve uses **HA recorder history**. The forecast comes from the `forecast` attribute of the `water_level_fc` sensor.
+### 1. Water Level + Flow Rate
+
+Combined dual-axis chart — water level (left axis, cm) and flow rate (right axis, m³/s) with SPA threshold annotations.
+
+![Water level and flow rate chart](docs/images/dashboard_water_level_flow.png)
 
 ```yaml
 type: custom:apexcharts-card
 header:
   show: true
-  title: Station – Water Level
-graph_span: 48h
-span:
-  start: hour
-  offset: "-24h"
-now:
-  show: true
-  label: Now
+  title: Station Name
+  show_states: true
+  colorize_states: true
+graph_span: 24h
 apex_config:
-  stroke:
-    dashArray:
-      - 0
-      - 6
+  annotations:
+    yaxis:
+      - "y": 46
+        borderColor: "#ff0000"
+        strokeWidth: 1
+        label:
+          text: ↓ Drought / Normal
+          position: right
+          style:
+            colors: "#fff"
+            background: "#a67b5b"
+      - "y": 320
+        borderColor: "#f1c40f"
+        strokeWidth: 1
+        label:
+          text: ↑ SPA1
+          position: right
+          style:
+            colors: "#fff"
+            background: "#4caf50"
+      - "y": 350
+        borderColor: "#e67e22"
+        strokeWidth: 1
+        label:
+          text: ↑ SPA2
+          position: right
+          style:
+            colors: "#fff"
+            background: "#ffd600"
+      - "y": 370
+        borderColor: "#c0392b"
+        strokeWidth: 1
+        label:
+          text: ↑ SPA3
+          position: right
+          style:
+            colors: "#fff"
+            background: "#f44336"
+      - "y": 457
+        borderColor: "#7b241c"
+        strokeWidth: 1
+        label:
+          text: ↑ SPA4
+          position: right
+          style:
+            colors: "#fff"
+            background: "#b71c1c"
+  yaxis:
+    - id: stav
+      min: 0
+    - id: prutok
+      opposite: true
+      min: 0
 series:
   - entity: sensor.YOUR_WATER_LEVEL_ENTITY
     name: Water Level
+    unit: cm
     stroke_width: 2
-    color: "#0077b6"
-  - entity: sensor.YOUR_WATER_LEVEL_FC_ENTITY
-    name: Forecast
-    stroke_width: 2
-    color: "#90e0ef"
-    data_generator: |
-      return entity.attributes.forecast.map(h => [new Date(h.dt).getTime(), h.value]);
-yaxis:
-  - min: ~0
-    apex_config:
-      plotLines:
-        - value: 165
-          color: "#ffd60a"
-          width: 1
-          label:
-            text: SPA1
-        - value: 200
-          color: "#ff9500"
-          width: 1
-          label:
-            text: SPA2
-        - value: 220
-          color: "#ff3a30"
-          width: 1
-          label:
-            text: SPA3
-```
-
-> Replace `165`, `200`, `220` with your station's actual SPA thresholds from the `flood_status` sensor attributes. Replace `YOUR_*_ENTITY` placeholders with actual entity IDs from Developer Tools.
-
----
-
-### 2. Flow Rate – History + Forecast
-
-```yaml
-type: custom:apexcharts-card
-header:
-  show: true
-  title: Station – Flow Rate
-graph_span: 48h
-span:
-  start: hour
-  offset: "-24h"
-now:
-  show: true
-  label: Now
-apex_config:
-  stroke:
-    dashArray:
-      - 0
-      - 6
-series:
+    type: area
+    opacity: 0.2
+    color: "#3498db"
+    yaxis_id: stav
   - entity: sensor.YOUR_FLOW_RATE_ENTITY
     name: Flow Rate
-    stroke_width: 2
-    color: "#0077b6"
     unit: m³/s
-  - entity: sensor.YOUR_FLOW_RATE_FC_ENTITY
-    name: Forecast
+    type: line
     stroke_width: 2
-    color: "#90e0ef"
-    unit: m³/s
-    data_generator: |
-      return entity.attributes.forecast.map(h => [new Date(h.dt).getTime(), h.value]);
+    color: "#2ecc71"
+    yaxis_id: prutok
+```
+
+> Replace SPA threshold values (`46`, `320`, `350`, `370`, `457`) with your station's actual values. Find them in the `flood_status` sensor attributes under **Settings → Devices → entity → Details**:
+
+![Flood status attributes](docs/images/flood_status_attributes.png)
+
+---
+
+### 2. Flood Status + Tendency
+
+Two [Mushroom Cards](https://github.com/piitaya/lovelace-mushroom) displayed side by side.
+
+![Flood status and tendency cards](docs/images/dashboard_flood_status_trend.png)
+
+**Flood Status card** — icon color follows the official CHMI color coding: light blue = normal, green = SPA1, yellow = SPA2, red = SPA3, dark red = SPA4.
+
+```yaml
+type: custom:mushroom-template-card
+primary: Flood Status
+secondary: >-
+  {{ state_translated('sensor.YOUR_FLOOD_STATUS_DESC_ENTITY') }}
+  ({{ states('sensor.YOUR_WATER_LEVEL_ENTITY') }} cm)
+icon: mdi:waves
+icon_color: >-
+  {% set stav = states('sensor.YOUR_FLOOD_STATUS_ENTITY') | int %}
+  {% if stav == -1 %}#5b9bd5
+  {% elif stav == 0 %}#90caf9
+  {% elif stav == 1 %}#4caf50
+  {% elif stav == 2 %}#ffd600
+  {% elif stav == 3 %}#f44336
+  {% elif stav == 4 %}#b71c1c
+  {% else %}#9e9e9e{% endif %}
+fill_container: true
+```
+
+**Tendency card** — icon and color change dynamically based on current tendency.
+
+```yaml
+type: custom:mushroom-template-card
+primary: Tendency
+secondary: >-
+  {{ state_translated('sensor.YOUR_TREND_ENTITY') }}
+  ({{ state_attr('sensor.YOUR_TREND_ENTITY', 'difference') }} cm)
+icon: >-
+  {% set stav = states('sensor.YOUR_TREND_ENTITY') %}
+  {% if stav == 'falling_fast' %}mdi:arrow-down-bold
+  {% elif stav == 'falling' %}mdi:arrow-down
+  {% elif stav == 'falling_slow' %}mdi:arrow-bottom-right
+  {% elif stav == 'steady' %}mdi:arrow-right
+  {% elif stav == 'rising_slow' %}mdi:arrow-top-right
+  {% elif stav == 'rising' %}mdi:arrow-up
+  {% elif stav == 'rising_fast' %}mdi:arrow-up-bold
+  {% else %}mdi:minus{% endif %}
+icon_color: >-
+  {% set stav = states('sensor.YOUR_TREND_ENTITY') %}
+  {% if stav == 'falling_fast' %}#b71c1c
+  {% elif stav == 'falling' %}#f44336
+  {% elif stav == 'falling_slow' %}#90caf9
+  {% elif stav == 'steady' %}#4caf50
+  {% elif stav == 'rising_slow' %}#ffd600
+  {% elif stav == 'rising' %}#ff9800
+  {% elif stav == 'rising_fast' %}#b71c1c
+  {% else %}#9e9e9e{% endif %}
+fill_container: true
 ```
 
 ---
 
-### 3. Flood Status Gauge
+### 3. Station Overview
+
+A vertical stack of Mushroom cards providing a complete station summary.
+
+![Station overview](docs/images/dashboard_station_overview.png)
+
+> **Note:** If your station does not provide water temperature, remove the temperature card from the horizontal stack.
 
 ```yaml
-type: gauge
-entity: sensor.YOUR_FLOOD_STATUS_ENTITY
-name: Flood Status
-min: -1
-max: 4
-severity:
-  green: -1
-  yellow: 1
-  red: 3
-needle: true
-```
-
----
-
-### 4. Station Overview
-
-```yaml
-type: entities
 title: Station Name
+type: vertical-stack
+cards:
+  - type: horizontal-stack
+    cards:
+      - type: custom:mushroom-template-card
+        primary: Last Measurement
+        secondary: >-
+          {{ states('sensor.YOUR_LAST_MEASUREMENT_ENTITY') | as_timestamp
+          | timestamp_custom('%d.%m.%Y %H:%M') }}
+        icon: mdi:clock
+        icon_color: "#9e9e9e"
+        fill_container: true
+      - type: custom:mushroom-template-card
+        primary: Water Temperature
+        secondary: "{{ states('sensor.YOUR_WATER_TEMP_ENTITY') }} °C"
+        icon: mdi:thermometer
+        icon_color: "#ff9800"
+        fill_container: true
+  - type: horizontal-stack
+    cards:
+      - type: custom:mushroom-template-card
+        primary: Water Level
+        secondary: "{{ states('sensor.YOUR_WATER_LEVEL_ENTITY') }} cm"
+        icon: mdi:waves-arrow-up
+        icon_color: "#0077b6"
+        fill_container: true
+      - type: custom:mushroom-template-card
+        primary: Flow Rate
+        secondary: "{{ states('sensor.YOUR_FLOW_RATE_ENTITY') }} m³/s"
+        icon: mdi:waves-arrow-right
+        icon_color: "#2ecc71"
+        fill_container: true
+  - type: horizontal-stack
+    cards:
+      - type: custom:mushroom-template-card
+        primary: Flood Status
+        secondary: >-
+          {{ state_translated('sensor.YOUR_FLOOD_STATUS_DESC_ENTITY') }}
+          ({{ states('sensor.YOUR_WATER_LEVEL_ENTITY') }} cm)
+        icon: mdi:waves
+        icon_color: >-
+          {% set stav = states('sensor.YOUR_FLOOD_STATUS_ENTITY') | int %}
+          {% if stav == -1 %}#5b9bd5
+          {% elif stav == 0 %}#90caf9
+          {% elif stav == 1 %}#4caf50
+          {% elif stav == 2 %}#ffd600
+          {% elif stav == 3 %}#f44336
+          {% elif stav == 4 %}#b71c1c
+          {% else %}#9e9e9e{% endif %}
+        fill_container: true
+      - type: custom:mushroom-template-card
+        primary: Tendency
+        secondary: >-
+          {{ state_translated('sensor.YOUR_TREND_ENTITY') }}
+          ({{ state_attr('sensor.YOUR_TREND_ENTITY', 'difference') }} cm)
+        icon: >-
+          {% set stav = states('sensor.YOUR_TREND_ENTITY') %}
+          {% if stav == 'falling_fast' %}mdi:arrow-down-bold
+          {% elif stav == 'falling' %}mdi:arrow-down
+          {% elif stav == 'falling_slow' %}mdi:arrow-bottom-right
+          {% elif stav == 'steady' %}mdi:arrow-right
+          {% elif stav == 'rising_slow' %}mdi:arrow-top-right
+          {% elif stav == 'rising' %}mdi:arrow-up
+          {% elif stav == 'rising_fast' %}mdi:arrow-up-bold
+          {% else %}mdi:minus{% endif %}
+        icon_color: >-
+          {% set stav = states('sensor.YOUR_TREND_ENTITY') %}
+          {% if stav == 'falling_fast' %}#b71c1c
+          {% elif stav == 'falling' %}#f44336
+          {% elif stav == 'falling_slow' %}#90caf9
+          {% elif stav == 'steady' %}#4caf50
+          {% elif stav == 'rising_slow' %}#ffd600
+          {% elif stav == 'rising' %}#ff9800
+          {% elif stav == 'rising_fast' %}#b71c1c
+          {% else %}#9e9e9e{% endif %}
+        fill_container: true
+```
+
+---
+
+### 4. Map
+
+The `water_level` and `flow_rate` sensors automatically appear on the HA map. For a dedicated map card:
+
+![Station map](docs/images/dashboard_map.png)
+
+```yaml
+type: map
 entities:
   - entity: sensor.YOUR_WATER_LEVEL_ENTITY
+    name: Station – Water Level
   - entity: sensor.YOUR_FLOW_RATE_ENTITY
-  - entity: sensor.YOUR_WATER_TEMP_ENTITY
-  - entity: sensor.YOUR_TREND_ENTITY
-  - entity: sensor.YOUR_FLOOD_STATUS_DESC_ENTITY
-  - entity: sensor.YOUR_LAST_MEASUREMENT_ENTITY
+    name: Station – Flow Rate
+hours_to_show: 0
+theme_mode: auto
 ```
 
 ---
 
-### 5. Multi-Station Comparison
+## Flood Warning Automation
+
+The following automation sends a notification when SPA1 (Watch) is reached. The `numeric_state` trigger fires **only once** when the value crosses the threshold — not repeatedly while it stays above it.
+
+> Similarly you can set up warnings for SPA2 (`above: 1`), SPA3 (`above: 2`) and SPA4 (`above: 3`).
+
+> Replace `notify.notify` with your specific notification service e.g. `notify.mobile_app_your_phone`.
 
 ```yaml
-type: custom:apexcharts-card
-header:
-  show: true
-  title: River Monitoring
-graph_span: 24h
-series:
-  - entity: sensor.YOUR_STATION1_WATER_LEVEL
-    name: Station 1
-  - entity: sensor.YOUR_STATION2_WATER_LEVEL
-    name: Station 2
-```
-
----
-
-## Automation Example
-
-```yaml
-automation:
-  - alias: "Flood Alert"
-    trigger:
-      - platform: numeric_state
-        entity_id: sensor.YOUR_FLOOD_STATUS_ENTITY
-        above: 1
-    action:
-      - service: notify.mobile_app
-        data:
-          message: >
-            Flood alert! Station reached
-            {{ states('sensor.YOUR_FLOOD_STATUS_DESC_ENTITY') }}.
-            Water level: {{ states('sensor.YOUR_WATER_LEVEL_ENTITY') }} cm
+alias: "Warning – Station SPA1"
+triggers:
+  - entity_id: sensor.YOUR_FLOOD_STATUS_ENTITY
+    above: 0
+    trigger: numeric_state
+actions:
+  - data:
+      title: "⚠️ Warning – Station SPA1 (Watch)"
+      message: >
+        SPA1 flood activity level reached (Watch)!
+        Water level: {{ states('sensor.YOUR_WATER_LEVEL_ENTITY') }} cm
+        Flow rate: {{ states('sensor.YOUR_FLOW_RATE_ENTITY') }} m³/s
+        Tendency: {{ state_translated('sensor.YOUR_TREND_ENTITY') }}
+    action: notify.notify
 ```
 
 ---
