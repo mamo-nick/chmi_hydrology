@@ -10,6 +10,32 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ---
 
+## [0.9.1] – 2026-05-28
+
+### Fixed
+- Integration card not showing in HA integrations dashboard
+- Changed `source` from `import` to `SOURCE_USER` for multi-station config entries
+- Moved `async_config_entry_first_refresh()` to `__init__.py` before `async_forward_entry_setups()`
+- Use `Platform.SENSOR` enum instead of string `"sensor"` in `__init__.py`
+- Removed duplicate `asyncio.gather` call from `sensor.py`
+- Renamed `async_step_import` to `async_step_user_additional`
+
+### Added
+- Dashboard screenshots in `docs/images/`
+- Dual-axis ApexCharts card example (water level + flow rate with SPA annotations)
+- Mushroom Cards examples for flood status and tendency
+- Station overview card (vertical-stack)
+- Flood warning automation example
+- `theme_mode: auto` for map card
+
+### Changed
+- README.md completely rewritten – EN as primary language
+- README.cs.md updated with new dashboard card examples
+- Removed gauge card example, replaced with Mushroom template card
+- Dashboard cards now use `YOUR_*_ENTITY` placeholders for clarity
+
+---
+
 ## [0.9.0] – 2026-05-06
 
 ### Added
