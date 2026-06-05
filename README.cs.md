@@ -3,7 +3,7 @@
 🇨🇿 Česky | 🇬🇧 [English](README.md)
 
 [![hacs_badge](https://img.shields.io/badge/HACS-Custom-orange.svg)](https://github.com/hacs/integration)
-![version](https://img.shields.io/badge/version-0.9.2-blue)
+![version](https://img.shields.io/badge/version-0.9.3-blue)
 
 Vlastní integrace pro Home Assistant umožňující sledování stavů řek, průtoků a povodňové aktivity pomocí otevřených dat **Českého hydrometeorologického ústavu (ČHMÚ)** — [opendata.chmi.cz](https://opendata.chmi.cz).
 
@@ -57,6 +57,24 @@ Rozhraní integrace je vícejazyčné. K dispozici jsou překlady pro češtinu,
 3. Pokud máš v HA nastavenou polohu domova, nejbližší stanice (do 10 km) se zobrazí automaticky předvybrané
 4. Můžeš také vyhledat libovolnou stanici podle názvu řeky nebo obce
 5. Vyber jednu nebo více stanic a potvrď — senzory se vytvoří automaticky
+
+![Obrazovka s nejbližšími stanicemi](docs/images/config_flow_nearby.png)
+
+Pokud hledáš stanici podle názvu, zobrazí se další výběrová obrazovka:
+
+![Obrazovka s výsledky hledání](docs/images/config_flow_search_select.png)
+
+Po výběru všech stanic potvrď výběr:
+
+![Potvrzovací obrazovka](docs/images/config_flow_confirm.png)
+
+Po nastavení integrace se zobrazí všechny nakonfigurované stanice s jejich entitami:
+
+![Přehled zařízení integrace](docs/images/integration_devices.png)
+
+Kliknutím na stanici zobrazíš všechny její entity:
+
+![Entity stanice](docs/images/integration_entities.png)
 
 Pro přidání další stanice použij **Přidat záznam** na kartě integrace. Pro odebrání stanice otevři záznam a smaž ho.
 

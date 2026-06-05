@@ -10,6 +10,19 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ---
 
+## [0.9.3] – 2026-06-05
+
+### Fixed
+- Multi-station setup: reverted to `source: import` for additional stations
+- `async_step_import` restored (was incorrectly renamed to `async_step_user_additional`)
+
+### Added
+- Config flow screenshots in README (nearby stations, search results, confirmation)
+- Integration device and entity overview screenshots in README
+- Updated Configuration section in README.md and README.cs.md
+
+---
+
 ## [0.9.2] – 2026-05-28
 
 ### Fixed

@@ -3,7 +3,7 @@
 🇬🇧 English | 🇨🇿 [Česky](README.cs.md)
 
 [![hacs_badge](https://img.shields.io/badge/HACS-Custom-orange.svg)](https://github.com/hacs/integration)
-![version](https://img.shields.io/badge/version-0.9.2-blue)
+![version](https://img.shields.io/badge/version-0.9.3-blue)
 
 Home Assistant custom integration for monitoring river water levels, flow rates and flood activity using open data from the **Czech Hydrometeorological Institute (CHMI)** — [opendata.chmi.cz](https://opendata.chmi.cz).
 
@@ -57,6 +57,24 @@ The integration UI is available in multiple languages. Translations for English,
 3. If your HA home location is set, nearby stations (within 10 km) are shown pre-selected automatically
 4. You can also search for any station by river or town name
 5. Select one or more stations and confirm — sensors are created automatically
+
+![Nearby stations screen](docs/images/config_flow_nearby.png)
+
+If you search for a station by name, an additional selection screen appears:
+
+![Search results screen](docs/images/config_flow_search_select.png)
+
+After selecting all stations, confirm your selection:
+
+![Confirmation screen](docs/images/config_flow_confirm.png)
+
+After setup, the integration shows all configured stations with their entities:
+
+![Integration devices](docs/images/integration_devices.png)
+
+Click on a station to see all its entities:
+
+![Station entities](docs/images/integration_entities.png)
 
 To add another station use **Add entry** on the integration card. To remove a station open the entry and delete it.
 
