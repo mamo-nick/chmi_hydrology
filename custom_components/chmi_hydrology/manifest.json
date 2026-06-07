@@ -1,15 +1,15 @@
 {
   "domain": "chmi_hydrology",
   "name": "ČHMÚ Hydrologie",
-  "version": "0.9.3",
-  "documentation": "https://github.com/mamo-nick/chmi_hydrology",
-  "issue_tracker": "https://github.com/mamo-nick/chmi_hydrology/issues",
-  "dependencies": [],
   "codeowners": [
     "@mamo-nick"
   ],
-  "requirements": [],
+  "config_flow": true,
+  "dependencies": [],
+  "documentation": "https://github.com/mamo-nick/chmi_hydrology",
   "integration_type": "hub",
   "iot_class": "cloud_polling",
-  "config_flow": true
+  "issue_tracker": "https://github.com/mamo-nick/chmi_hydrology/issues",
+  "requirements": [],
+  "version": "0.9.3"
 }
