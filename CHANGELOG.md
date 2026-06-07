@@ -10,6 +10,17 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ---
 
+## [0.9.4] – 2026-06-07
+
+### Fixed
+- Sort manifest.json keys correctly (domain, name, then alphabetical) – required by Hassfest
+
+### Added
+- brand/ folder with icon.png and icon@2x.png inside integration directory – required by HACS validation
+- GitHub Actions workflow for HACS and Hassfest validation
+
+---
+
 ## [0.9.3] – 2026-06-05
 
 ### Fixed
