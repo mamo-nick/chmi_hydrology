@@ -3,7 +3,7 @@
 🇨🇿 Česky | 🇬🇧 [English](README.md)
 
 [![hacs_badge](https://img.shields.io/badge/HACS-Custom-orange.svg)](https://github.com/hacs/integration)
-![version](https://img.shields.io/badge/version-0.9.4-blue)
+![version](https://img.shields.io/badge/version-0.9.5-blue)
 
 Vlastní integrace pro Home Assistant umožňující sledování stavů řek, průtoků a povodňové aktivity pomocí otevřených dat **Českého hydrometeorologického ústavu (ČHMÚ)** — [opendata.chmi.cz](https://opendata.chmi.cz).
 
@@ -99,6 +99,14 @@ https://opendata.chmi.cz/hydrology/now/data/{station_id}.json
 ```
 
 ČHMÚ data typicky aktualizuje každých **10 minut**. Popis kódů polí: [Popis_kodu_now_a_recent.pdf](https://opendata.chmi.cz/hydrology/read_me/Popis_kodu_now_a_recent.pdf)
+
+### Licence a atribuce
+
+Data jsou licencována pod [Creative Commons Attribution 4.0 (CC BY 4.0)](https://creativecommons.org/licenses/by/4.0/deed.cs).
+
+Logo ČHMÚ je použito se souhlasem ČHMÚ pro účely identifikace zdroje dat.
+
+> **Tento projekt nevyvíjí, neprovozuje ani nepodporuje ČHMÚ.** Jde o nezávislý open-source projekt vytvořený komunitou Home Assistant.
 
 ---
 

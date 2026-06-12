@@ -11,5 +11,5 @@
   "iot_class": "cloud_polling",
   "issue_tracker": "https://github.com/mamo-nick/chmi_hydrology/issues",
   "requirements": [],
-  "version": "0.9.4"
+  "version": "0.9.5"
 }

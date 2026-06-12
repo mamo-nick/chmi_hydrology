@@ -10,6 +10,19 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ---
 
+## [0.9.5]
+
+### Added
+- Official CHMI brand icon and logo (with permission from CHMI)
+- `brands/` updated with icon, icon_dark, logo, logo_dark (+ @2x variants)
+- License & Attribution section in README (CC BY 4.0, CHMI logo disclaimer)
+
+### Changed
+- `custom_components/chmi_hydrology/icon.png` replaced with official CHMI mark
+- Removed `icon.svg` (replaced by official PNG icon)
+
+---
+
 ## [0.9.4] – 2026-06-07
 
 ### Fixed

@@ -3,7 +3,7 @@
 🇬🇧 English | 🇨🇿 [Česky](README.cs.md)
 
 [![hacs_badge](https://img.shields.io/badge/HACS-Custom-orange.svg)](https://github.com/hacs/integration)
-![version](https://img.shields.io/badge/version-0.9.4-blue)
+![version](https://img.shields.io/badge/version-0.9.5-blue)
 
 Home Assistant custom integration for monitoring river water levels, flow rates and flood activity using open data from the **Czech Hydrometeorological Institute (CHMI)** — [opendata.chmi.cz](https://opendata.chmi.cz).
 
@@ -99,6 +99,14 @@ https://opendata.chmi.cz/hydrology/now/data/{station_id}.json
 ```
 
 CHMI typically updates data every **10 minutes**. Field code reference: [Popis_kodu_now_a_recent.pdf](https://opendata.chmi.cz/hydrology/read_me/Popis_kodu_now_a_recent.pdf)
+
+### License & Attribution
+
+Data is licensed under [Creative Commons Attribution 4.0 (CC BY 4.0)](https://creativecommons.org/licenses/by/4.0/deed.en).
+
+The CHMI logo is used with permission from CHMI for the purpose of identifying the data source.
+
+> **This project is not developed, operated, or endorsed by CHMI.** It is an independent open-source project created by the Home Assistant community.
 
 ---
 
