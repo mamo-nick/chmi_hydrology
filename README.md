@@ -100,14 +100,6 @@ https://opendata.chmi.cz/hydrology/now/data/{station_id}.json
 
 CHMI typically updates data every **10 minutes**. Field code reference: [Popis_kodu_now_a_recent.pdf](https://opendata.chmi.cz/hydrology/read_me/Popis_kodu_now_a_recent.pdf)
 
-### License & Attribution
-
-Data is licensed under [Creative Commons Attribution 4.0 (CC BY 4.0)](https://creativecommons.org/licenses/by/4.0/deed.en).
-
-The CHMI logo is used with permission from CHMI for the purpose of identifying the data source.
-
-> **This project is not developed, operated, or endorsed by CHMI.** It is an independent open-source project created by the Home Assistant community.
-
 ---
 
 ## Entities
@@ -280,6 +272,7 @@ apex_config:
   yaxis:
     - id: stav
       min: 0
+      decimalsInFloat: 0
     - id: prutok
       opposite: true
       min: 0
@@ -506,5 +499,9 @@ actions:
 ## License
 
 MIT License. Data provided by [CHMI](https://www.chmi.cz) under open data license.
+
+Data is licensed under [Creative Commons Attribution 4.0 (CC BY 4.0)](https://creativecommons.org/licenses/by/4.0/deed.en). The CHMI logo is used with permission from CHMI for the purpose of identifying the data source.
+
+> **This project is not developed, operated, or endorsed by CHMI.** It is an independent open-source project created by the Home Assistant community.
 
 For a detailed description of the integration structure, data flow and sensor logic see [Architecture.md](Architecture.md).

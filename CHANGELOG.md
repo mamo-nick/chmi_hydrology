@@ -15,11 +15,16 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ### Added
 - Official CHMI brand icon and logo (with permission from CHMI)
 - `brands/` updated with icon, icon_dark, logo, logo_dark (+ @2x variants)
-- License & Attribution section in README (CC BY 4.0, CHMI logo disclaimer)
+- License & Attribution merged into the License section in README (CC BY 4.0, CHMI logo disclaimer)
+- `decimalsInFloat: 0` on the water level Y-axis in the ApexCharts example for whole-cm display
+- Moved data License & Attribution into the existing License section (previously under Data Source)
 
 ### Changed
 - `custom_components/chmi_hydrology/icon.png` replaced with official CHMI mark
 - Removed `icon.svg` (replaced by official PNG icon)
+- Added `custom_components/chmi_hydrology/brand/` with local brand assets for HA 2026.3+ (icon.png, dark_icon.png, logo.png, dark_logo.png + @2x variants)
+- Removed obsolete root `brands/` folder (not used by HA or HACS)
+- Updated dashboard_water_level_flow.png screenshot
 
 ---
 

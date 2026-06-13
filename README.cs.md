@@ -100,14 +100,6 @@ https://opendata.chmi.cz/hydrology/now/data/{station_id}.json
 
 ČHMÚ data typicky aktualizuje každých **10 minut**. Popis kódů polí: [Popis_kodu_now_a_recent.pdf](https://opendata.chmi.cz/hydrology/read_me/Popis_kodu_now_a_recent.pdf)
 
-### Licence a atribuce
-
-Data jsou licencována pod [Creative Commons Attribution 4.0 (CC BY 4.0)](https://creativecommons.org/licenses/by/4.0/deed.cs).
-
-Logo ČHMÚ je použito se souhlasem ČHMÚ pro účely identifikace zdroje dat.
-
-> **Tento projekt nevyvíjí, neprovozuje ani nepodporuje ČHMÚ.** Jde o nezávislý open-source projekt vytvořený komunitou Home Assistant.
-
 ---
 
 ## Entity
@@ -280,6 +272,7 @@ apex_config:
   yaxis:
     - id: stav
       min: 0
+      decimalsInFloat: 0
     - id: prutok
       opposite: true
       min: 0
@@ -506,5 +499,9 @@ actions:
 ## Licence
 
 MIT License. Data poskytuje [ČHMÚ](https://www.chmi.cz) v rámci otevřených dat.
+
+Data jsou licencována pod [Creative Commons Attribution 4.0 (CC BY 4.0)](https://creativecommons.org/licenses/by/4.0/deed.cs). Logo ČHMÚ je použito se souhlasem ČHMÚ pro účely identifikace zdroje dat.
+
+> **Tento projekt nevyvíjí, neprovozuje ani nepodporuje ČHMÚ.** Jde o nezávislý open-source projekt vytvořený komunitou Home Assistant.
 
 Technický popis architektury, datového toku a logiky senzorů: [Architecture.md](Architecture.md).
