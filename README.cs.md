@@ -3,7 +3,7 @@
 🇨🇿 Česky | 🇬🇧 [English](README.md)
 
 [![hacs_badge](https://img.shields.io/badge/HACS-Custom-orange.svg)](https://github.com/hacs/integration)
-![version](https://img.shields.io/badge/version-0.9.6-blue)
+![version](https://img.shields.io/badge/version-1.0.0-blue)
 
 Vlastní integrace pro Home Assistant umožňující sledování stavů řek, průtoků a povodňové aktivity pomocí otevřených dat **Českého hydrometeorologického ústavu (ČHMÚ)** — [opendata.chmi.cz](https://opendata.chmi.cz).
 
@@ -36,11 +36,10 @@ Rozhraní integrace je vícejazyčné. K dispozici jsou překlady pro češtinu,
 
 ### Přes HACS (doporučeno)
 
-1. Otevři HACS → Integrace → ⋮ → Vlastní repozitáře
-2. Přidej URL: `https://github.com/mamo-nick/chmi_hydrology`
-3. Kategorie: Integrace
-4. Nainstaluj **CHMI Hydrology**
-5. Restartuj Home Assistant
+1. Otevři HACS → Integrace
+2. Vyhledej **ČHMÚ Hydrologie**
+3. Klikni **Stáhnout**
+4. Restartuj Home Assistant
 
 ### Ručně
 

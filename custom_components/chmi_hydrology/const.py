@@ -6,7 +6,7 @@ NAME = "CHMI Hydrology"
 
 # API URLs
 API_BASE = "https://opendata.chmi.cz/hydrology/now"
-API_META_URL = f"{API_BASE}/metadata/meta3.json"
+API_META_URL = f"{API_BASE}/metadata/meta1.json"
 API_DATA_URL = f"{API_BASE}/data/{{station_id}}.json"
 
 # Update interval (seconds)

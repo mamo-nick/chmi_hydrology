@@ -3,7 +3,7 @@
 🇬🇧 English | 🇨🇿 [Česky](README.cs.md)
 
 [![hacs_badge](https://img.shields.io/badge/HACS-Custom-orange.svg)](https://github.com/hacs/integration)
-![version](https://img.shields.io/badge/version-0.9.6-blue)
+![version](https://img.shields.io/badge/version-1.0.0-blue)
 
 Home Assistant custom integration for monitoring river water levels, flow rates and flood activity using open data from the **Czech Hydrometeorological Institute (CHMI)** — [opendata.chmi.cz](https://opendata.chmi.cz).
 
@@ -36,11 +36,10 @@ The integration UI is available in multiple languages. Translations for English,
 
 ### Via HACS (recommended)
 
-1. Open HACS → Integrations → ⋮ → Custom repositories
-2. Add URL: `https://github.com/mamo-nick/chmi_hydrology`
-3. Category: Integration
-4. Install **CHMI Hydrology**
-5. Restart Home Assistant
+1. Open HACS → Integrations
+2. Search for **CHMI Hydrology**
+3. Click **Download**
+4. Restart Home Assistant
 
 ### Manual
 

@@ -10,16 +10,15 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ---
 
-## [0.9.6] – 2026-07-29
+## [1.0.0] – 2026-07-31
 
 ### Added
-- Support for reservoir (VD) stations and 21 additional stations
-  previously missing from the station list (e.g. VD Orlík, VD Nové Mlýny)
+- Official HACS default store listing 🎉
+- Updated brand assets with tighter crop (closer to CHMI's own website usage)
 
 ### Changed
-- Station metadata source switched from `meta1.json` to `meta3.json`
-  which contains 563 stations (vs 542 in meta1) and richer metadata
-  (catchment area, N-year flows, SPA frequency, web links)
+- Installation section rewritten – no longer requires adding a custom repository
+- Removed `icon.svg` (replaced by official PNG icon)
 
 ---
 
