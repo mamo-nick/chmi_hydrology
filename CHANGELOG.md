@@ -10,7 +10,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ---
 
-## [1.1.0] – 2026-08-03
+## [1.1.0] – 2026-08-24
 
 ### Added
 - 30-day history bootstrap on first setup, imported directly into each water level / flow
