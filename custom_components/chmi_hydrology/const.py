@@ -8,6 +8,14 @@ NAME = "CHMI Hydrology"
 API_BASE = "https://opendata.chmi.cz/hydrology/now"
 API_META_URL = f"{API_BASE}/metadata/meta1.json"
 API_DATA_URL = f"{API_BASE}/data/{{station_id}}.json"
+API_RECENT_URL = (
+    "https://opendata.chmi.cz/hydrology/recent/data/{date}_{station_id}.json"
+)
+
+# Extended history bootstrap
+HISTORY_BOOTSTRAP_DAYS = 30
+HISTORY_FETCH_DELAY = 0.1  # seconds between parallel recent/ requests
+TIMEZONE_NAME = "Europe/Prague"
 
 # Update interval (seconds)
 DEFAULT_SCAN_INTERVAL = 600  # 10 minutes

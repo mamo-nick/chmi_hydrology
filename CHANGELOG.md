@@ -10,6 +10,39 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ---
 
+## [1.1.0] – 2026-08-03
+
+### Added
+- 30-day history bootstrap on first setup, imported directly into each water level / flow
+  rate / temperature sensor's own Long-Term Statistics — history shows a full month
+  immediately, right in the entity's own history graph, no extra dashboard card required
+- New "Ready from Day One" README section explaining the bootstrap, including a note that the
+  entity popup's mini history graph only previews a short window by default — click **Show
+  more** for the full 30 days, or add the new `history-graph` dashboard card example for an
+  always-expanded view
+- `Architecture.md`: documentation of the bootstrap mechanism, data sources, and timezone
+  handling, citing CHMI's official open-data StoryMap
+
+### Changed
+- `manifest.json`: added `recorder` to `dependencies` (required for LTS access)
+
+### Notes
+- Bootstrap runs as a background task after setup completes and never blocks or fails
+  station setup — missing days (HTTP 403/404, e.g. a brand-new station, or fewer than 30
+  days available near the start of a calendar year due to CHMI's `recent/` → `historical/`
+  rollover) are skipped gracefully and logged at INFO level
+- History is imported with `async_import_statistics` (`source="recorder"`) directly under
+  each sensor's own `entity_id`, looked up from the entity registry — not a separate
+  statistic namespace — so it appears natively in the entity's history and keeps growing
+  automatically afterwards, without any additional recurring task
+- Development note: an interim build used `async_add_external_statistics` under a custom
+  `chmi_hydrology:...` statistic id. That avoided the `Invalid statistic_id` error from
+  misusing `async_import_statistics` with a non-entity id, but left the bootstrapped history
+  invisible in the entity's own history and frozen at the original 30-day window. Superseded
+  before release by importing under the real entity_id instead.
+
+---
+
 ## [1.0.0] – 2026-07-31
 
 ### Added

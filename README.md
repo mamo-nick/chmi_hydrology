@@ -3,7 +3,7 @@
 🇬🇧 English | 🇨🇿 [Česky](README.cs.md)
 
 [![hacs_badge](https://img.shields.io/badge/HACS-Custom-orange.svg)](https://github.com/hacs/integration)
-![version](https://img.shields.io/badge/version-1.0.0-blue)
+![version](https://img.shields.io/badge/version-1.1.0-blue)
 
 Home Assistant custom integration for monitoring river water levels, flow rates and flood activity using open data from the **Czech Hydrometeorological Institute (CHMI)** — [opendata.chmi.cz](https://opendata.chmi.cz).
 
@@ -20,7 +20,38 @@ The integration UI is available in multiple languages. Translations for English,
 - Logical sensors: flood status (numeric + text), tendency
 - Automatic map display — sensors with coordinates appear on the HA map automatically
 - Auto-refresh every 10 minutes
+- **30-day history bootstrap on first setup** — no empty graphs
 - Multi-language UI
+
+---
+
+## Ready from Day One
+
+Unlike most integrations that start with an empty graph, CHMI Hydrology automatically
+downloads 30 days of historical data on first setup and imports it directly into each
+sensor's own history. It runs in the background right after setup completes, so it never
+delays adding a station. Open any water level, flow rate or temperature sensor right after
+installation and its history already covers a full month — no extra dashboard card needed,
+and it keeps growing from there like any other sensor's history.
+
+This 30-day history comes from CHMI's own [`recent/`
+archive](https://opendata.chmi.cz/hydrology/recent/data/) — the same open-data source as the
+live readings, just the part of it that holds roughly the last year of 10-minute
+measurements (as opposed to the `now/` endpoint the integration otherwise polls every 10
+minutes for current data). It's decimated into hourly averages before being imported, since
+Home Assistant's Long-Term Statistics are hourly, not 10-minute, resolution.
+
+> **Note:** the small graph shown directly in an entity's "more info" popup only previews a
+> short recent window by default. Click **Show more** (below the graph) to open the full
+> history page, where the 30-day bootstrap is visible — this is standard Home Assistant
+> behavior for every entity, not something specific to this integration. If you'd rather see
+> the full range at a glance without the extra click, add a [history graph
+> card](#2-long-term-history-30-days) to your dashboard — it renders the same underlying
+> history, just always expanded.
+
+> **Note:** In the first days of January, CHMI is still rotating the previous year's data into
+> its `historical/` archive, so fewer than 30 days may be available for a short time. This is
+> expected and resolves itself automatically as new days accumulate.
 
 ---
 
@@ -98,6 +129,11 @@ https://opendata.chmi.cz/hydrology/now/data/{station_id}.json
 ```
 
 CHMI typically updates data every **10 minutes**. Field code reference: [Popis_kodu_now_a_recent.pdf](https://opendata.chmi.cz/hydrology/read_me/Popis_kodu_now_a_recent.pdf)
+
+Historical data for the [30-day bootstrap](#ready-from-day-one) (one-time, on first setup only):
+```
+https://opendata.chmi.cz/hydrology/recent/data/{date}_{station_id}.json
+```
 
 ---
 
@@ -299,7 +335,48 @@ series:
 
 ---
 
-### 2. Flood Status + Tendency
+### 2. Long-Term History (30 Days)
+
+Thanks to the [30-day history bootstrap](#ready-from-day-one), each sensor's own history
+already covers a full month right after setup — the entity's built-in "more info" popup shows
+it as soon as you click **Show more** (see note above). If you'd rather have it visible
+directly on a dashboard, without that extra click, use HA's native `history-graph` card — it
+renders the exact same combined history as the popup, just always expanded:
+
+```yaml
+type: history-graph
+title: Water Level – 30 Day History
+entities:
+  - sensor.YOUR_WATER_LEVEL_ENTITY
+hours_to_show: 720
+```
+
+Alternatively, the `statistics-graph` card shows the same data aggregated into hourly
+mean/min/max bars instead of a continuous line — useful if you prefer that style:
+
+```yaml
+type: statistics-graph
+title: Water Level – History
+entities:
+  - sensor.YOUR_WATER_LEVEL_ENTITY
+stat_types:
+  - mean
+period: hour
+days_to_show: 30
+```
+
+> For the same chart in ApexCharts Card, use a `statistics` series instead of `entity`:
+> ```yaml
+> series:
+>   - entity: sensor.YOUR_WATER_LEVEL_ENTITY
+>     statistics:
+>       type: mean
+>       period: hour
+> ```
+
+---
+
+### 3. Flood Status + Tendency
 
 Two [Mushroom Cards](https://github.com/piitaya/lovelace-mushroom) displayed side by side.
 
@@ -359,7 +436,7 @@ fill_container: true
 
 ---
 
-### 3. Station Overview
+### 4. Station Overview
 
 A vertical stack of Mushroom cards providing a complete station summary.
 
@@ -449,7 +526,7 @@ cards:
 
 ---
 
-### 4. Map
+### 5. Map
 
 The `water_level` and `flow_rate` sensors automatically appear on the HA map. For a dedicated map card:
 

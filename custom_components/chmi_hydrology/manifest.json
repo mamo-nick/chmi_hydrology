@@ -5,11 +5,13 @@
     "@mamo-nick"
   ],
   "config_flow": true,
-  "dependencies": [],
+  "dependencies": [
+    "recorder"
+  ],
   "documentation": "https://github.com/mamo-nick/chmi_hydrology",
   "integration_type": "hub",
   "iot_class": "cloud_polling",
   "issue_tracker": "https://github.com/mamo-nick/chmi_hydrology/issues",
   "requirements": [],
-  "version": "1.0.0"
+  "version": "1.1.0"
 }

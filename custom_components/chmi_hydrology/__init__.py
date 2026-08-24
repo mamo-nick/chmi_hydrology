@@ -10,6 +10,7 @@ from homeassistant.core import HomeAssistant
 
 from .const import CONF_STATIONS, DOMAIN
 from .coordinator import ChmiHydrologyCoordinator
+from .statistics_import import async_bootstrap_history
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -41,6 +42,24 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     hass.data[DOMAIN][entry.entry_id] = coordinators
 
     await hass.config_entries.async_forward_entry_setups(entry, PLATFORMS)
+
+    # Bootstrap 30 days of history in the background - never blocks setup
+    # and never fails setup if CHMI's recent/ endpoint has no data for
+    # this station (e.g. a brand-new station, or the January rollover).
+    for station in stations:
+        station_id = station["objID"]
+        coordinator = coordinators[station_id]
+        entry.async_create_background_task(
+            hass,
+            async_bootstrap_history(
+                hass,
+                station_id=station_id,
+                stream_name=station["STREAM_NAME"],
+                station_name=station["STATION_NAME"],
+                available_ts=coordinator.available_ts,
+            ),
+            name=f"chmi_hydrology_history_bootstrap_{station_id}",
+        )
 
     return True
 

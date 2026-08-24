@@ -210,3 +210,53 @@ HA groups all entities under one device automatically.
 ```
 
 This enables ApexCharts-card `data_generator` to render forecast graphs directly from entity attributes without storing historical data in the HA recorder.
+
+---
+
+## Extended History Bootstrap
+
+**Module:** `statistics_import.py`
+
+**Source:** CHMI StoryMap "Otevřená data ČHMÚ – hydrologie: průvodce otevřenými daty"
+(<https://storymaps.arcgis.com/stories/9296c701a3494ed69d0150dd9eeb295f>)
+
+CHMI's `now/` endpoint provides the current day's data (10-minute samples). After midnight,
+that day's data moves to the `recent/data/{YYYYMMDD}_{station_id}.json` endpoint, where it
+stays - validated - until it is replaced by `historical/` data after one calendar year.
+
+On first setup, the integration downloads up to `HISTORY_BOOTSTRAP_DAYS` (30) days of `recent/`
+data as a background task (`entry.async_create_background_task`, started after platform setup
+so it never blocks startup). Each day's 10-minute samples are decimated into hourly averages
+(mean/min/max) and written **directly into the matching sensor entity's own Long-Term
+Statistics** via `async_import_statistics`, with `source="recorder"` and `statistic_id` set to
+that entity's real `entity_id` - looked up from the entity registry by `unique_id`, never
+guessed from the station name, so it keeps working if the user renames the entity. Only the
+physical measurement series (`H`, `Q`, `T`, `TH`) are bootstrapped; forecast series (`H_F`,
+`Q_F`) are skipped since a forecast has no history of its own.
+
+Because the statistic is the entity's own, the history is visible immediately in the entity's
+built-in history/statistics graph - no separate dashboard card or statistic namespace is
+needed - and Home Assistant's recorder keeps extending it automatically forever once the
+entity starts reporting real state changes. No periodic "keep it fresh" task is needed on our
+side.
+
+Bootstrap runs once per entity - if statistics already exist for that `entity_id` (checked via
+`get_last_statistics`), that series is skipped. This covers both "bootstrap already ran" and,
+on a much later restart, "this entity has accumulated real history of its own by now, don't
+overwrite it."
+
+> **Note:** an earlier iteration of this feature wrote to a separate external statistic
+> (`chmi_hydrology:{station_slug}_{ts_id}_history`, via `async_add_external_statistics`).
+> That approach worked technically but left the imported history invisible in the entity's own
+> history dialog and produced a snapshot that never grew past the original 30-day window. The
+> entity-linked approach above supersedes it.
+
+**Timezone handling:** CHMI timestamps are naive local time (CET/CEST). Each timestamp is
+assigned the `Europe/Prague` zone via `dt_util.get_time_zone()` (which resolves DST
+transitions automatically - no fixed offset is ever hardcoded), then converted to UTC via
+`dt_util.as_utc()` before being handed to the recorder, which requires timezone-aware UTC.
+
+**Missing data:** Individual days that return HTTP 403/404 (e.g. a brand-new station, or the
+January rollover into `historical/`) are skipped; the bootstrap uses whatever days are
+available rather than failing. If fewer than 30 days were found, this is logged at INFO level,
+not as a warning - it is an expected condition, not an error.

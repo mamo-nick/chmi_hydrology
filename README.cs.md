@@ -3,7 +3,7 @@
 🇨🇿 Česky | 🇬🇧 [English](README.md)
 
 [![hacs_badge](https://img.shields.io/badge/HACS-Custom-orange.svg)](https://github.com/hacs/integration)
-![version](https://img.shields.io/badge/version-1.0.0-blue)
+![version](https://img.shields.io/badge/version-1.1.0-blue)
 
 Vlastní integrace pro Home Assistant umožňující sledování stavů řek, průtoků a povodňové aktivity pomocí otevřených dat **Českého hydrometeorologického ústavu (ČHMÚ)** — [opendata.chmi.cz](https://opendata.chmi.cz).
 
@@ -20,7 +20,37 @@ Rozhraní integrace je vícejazyčné. K dispozici jsou překlady pro češtinu,
 - Logické senzory: povodňový stav (číselný + textový), tendence
 - Automatické zobrazení na mapě — senzory se souřadnicemi se zobrazí na mapě HA automaticky
 - Automatická aktualizace každých 10 minut
+- **Bootstrap 30denní historie při prvním nastavení** — žádné prázdné grafy
 - Vícejazyčné rozhraní
+
+---
+
+## Připraveno od prvního dne
+
+Na rozdíl od většiny integrací, které začínají s prázdným grafem, ČHMÚ Hydrologie
+automaticky stáhne 30 dní historických dat hned při prvním nastavení a naimportuje je přímo
+do historie příslušného senzoru. Běží na pozadí ihned po dokončení nastavení, takže nikdy
+nezdrží přidání stanice. Otevři si po instalaci libovolný senzor vodního stavu, průtoku nebo
+teploty — jeho historie už pokrývá celý měsíc zpět, bez nutnosti přidávat jakoukoli kartu, a
+odtud dál roste stejně jako historie jakéhokoli jiného senzoru.
+
+Tato 30denní historie pochází z vlastního [archivu ČHMÚ
+`recent/`](https://opendata.chmi.cz/hydrology/recent/data/) — stejný zdroj otevřených dat
+jako aktuální hodnoty, jen ta jeho část, která uchovává zhruba poslední rok 10minutových
+měření (na rozdíl od endpointu `now/`, který integrace jinak stahuje každých 10 minut kvůli
+aktuálním datům). Před importem se decimuje na hodinové průměry, protože Long-Term Statistics
+v Home Assistantu mají hodinové, ne 10minutové rozlišení.
+
+> **Poznámka:** malý graf přímo v okně "více informací" entity standardně ukazuje jen krátký
+> nedávný úsek. Klikni na **Zobrazit více** (pod grafem) — otevře se plná stránka historie,
+> kde je 30denní bootstrap vidět. Tohle je běžné chování Home Assistantu pro úplně každou
+> entitu, nemá to nic společného s touto integrací. Pokud chceš vidět celý rozsah rovnou bez
+> extra kliknutí, přidej si na dashboard [kartu s grafem historie](#2-dlouhodobá-historie-30-dní)
+> — vykresluje stejnou historii, jen natrvalo rozbalenou.
+
+> **Poznámka:** V prvních dnech ledna ČHMÚ ještě přesouvá data z předchozího roku do archivu
+> `historical/`, takže po krátkou dobu může být dostupných méně než 30 dní. To je očekávaný
+> stav, který se automaticky vyřeší s přibývajícími novými dny.
 
 ---
 
@@ -98,6 +128,11 @@ https://opendata.chmi.cz/hydrology/now/data/{station_id}.json
 ```
 
 ČHMÚ data typicky aktualizuje každých **10 minut**. Popis kódů polí: [Popis_kodu_now_a_recent.pdf](https://opendata.chmi.cz/hydrology/read_me/Popis_kodu_now_a_recent.pdf)
+
+Historická data pro [30denní bootstrap](#připraveno-od-prvního-dne) (jednorázově, jen při prvním nastavení):
+```
+https://opendata.chmi.cz/hydrology/recent/data/{date}_{station_id}.json
+```
 
 ---
 
@@ -299,7 +334,48 @@ series:
 
 ---
 
-### 2. Povodňový stupeň + tendence
+### 2. Dlouhodobá historie (30 dní)
+
+Díky bootstrapu 30denní historie (viz sekce výše) pokrývá historie každého senzoru celý
+měsíc hned po instalaci — v okně "více informací" entity ji uvidíš po kliknutí na **Zobrazit
+více** (viz poznámka výše). Pokud ji chceš mít rovnou na dashboardu bez toho kliknutí navíc,
+použij nativní HA kartu `history-graph` — vykresluje přesně tu samou kombinovanou historii
+jako to okno, jen natrvalo rozbalenou:
+
+```yaml
+type: history-graph
+title: Vodní stav – 30denní historie
+entities:
+  - sensor.TVOJE_ENTITA_VODNI_STAV
+hours_to_show: 720
+```
+
+Alternativně karta `statistics-graph` ukáže stejná data agregovaná do hodinových
+mean/min/max sloupců místo souvislé čáry — hodí se, pokud preferuješ tenhle styl:
+
+```yaml
+type: statistics-graph
+title: Vodní stav – historie
+entities:
+  - sensor.TVOJE_ENTITA_VODNI_STAV
+stat_types:
+  - mean
+period: hour
+days_to_show: 30
+```
+
+> Pro stejný graf v ApexCharts Card použij sérii typu `statistics` místo `entity`:
+> ```yaml
+> series:
+>   - entity: sensor.TVOJE_ENTITA_VODNI_STAV
+>     statistics:
+>       type: mean
+>       period: hour
+> ```
+
+---
+
+### 3. Povodňový stupeň + tendence
 
 Dvě karty [Mushroom Cards](https://github.com/piitaya/lovelace-mushroom) zobrazené vedle sebe.
 
@@ -359,7 +435,7 @@ fill_container: true
 
 ---
 
-### 3. Přehled stanice
+### 4. Přehled stanice
 
 Vertical stack Mushroom karet s kompletním přehledem stanice.
 
@@ -449,7 +525,7 @@ cards:
 
 ---
 
-### 4. Mapa
+### 5. Mapa
 
 Senzory `water_level` a `flow_rate` se automaticky zobrazují na mapě HA. Pro samostatnou mapovou kartu:
 
