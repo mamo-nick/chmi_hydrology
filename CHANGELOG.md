@@ -10,6 +10,28 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ---
 
+## [1.1.1] – 2026-11-05
+
+### Changed
+- Installation instructions (README EN + CS) now cover the Marketplace built into Home Assistant
+  2026.11 (Settings → Marketplace); HACS is kept as the path for Home Assistant 2026.10 and older.
+  Requirements and the note about installing ApexCharts / Mushroom Cards were updated accordingly,
+  and the "HACS Custom" badge was replaced.
+- Czech README now tells users to search for **CHMI Hydrology**, the name shown in the catalog.
+- Bug report template: added **Marketplace** as an installation method.
+- Configuration step: the search hint now says to search for `chmi` or `hydrologie` (the integration
+  is listed as ČHMÚ Hydrologie, but the Add Integration search matches `chmi`, not `chmu`), and a
+  My Home Assistant button starts the setup directly.
+
+### Fixed
+- Minimum supported Home Assistant version raised from 2023.6 to 2025.11 (`hacs.json` and README).
+  The history bootstrap introduced in 1.1.0 relies on `StatisticMeanType` and `unit_class` in the
+  recorder statistics metadata, which do not exist in older Home Assistant versions, so the
+  integration could fail to load there. The Marketplace and HACS now offer an older release
+  instead of this one on unsupported versions.
+
+---
+
 ## [1.1.0] – 2026-08-24
 
 ### Added

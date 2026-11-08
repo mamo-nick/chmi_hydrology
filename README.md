@@ -2,8 +2,8 @@
 
 🇬🇧 English | 🇨🇿 [Česky](README.cs.md)
 
-[![hacs_badge](https://img.shields.io/badge/HACS-Custom-orange.svg)](https://github.com/hacs/integration)
-![version](https://img.shields.io/badge/version-1.1.0-blue)
+[![Marketplace](https://img.shields.io/badge/Marketplace-HACS%20default-41BDF5.svg)](https://www.home-assistant.io/integrations/marketplace/)
+![version](https://img.shields.io/badge/version-1.1.1-blue)
 
 Home Assistant custom integration for monitoring river water levels, flow rates and flood activity using open data from the **Czech Hydrometeorological Institute (CHMI)** — [opendata.chmi.cz](https://opendata.chmi.cz).
 
@@ -57,15 +57,26 @@ Home Assistant's Long-Term Statistics are hourly, not 10-minute, resolution.
 
 ## Requirements
 
-- Home Assistant 2023.6 or newer
-- HACS installed
+- Home Assistant 2025.11 or newer
+- [Marketplace](https://www.home-assistant.io/integrations/marketplace/) (built into Home Assistant 2026.11 and newer) or HACS (Home Assistant 2026.10 and older)
 - Internet access from HA instance
 
 ---
 
 ## Installation
 
-### Via HACS (recommended)
+### Home Assistant 2026.11 or newer – Marketplace (recommended)
+
+1. Open **Settings → Marketplace** (administrators only). The first time, read the notice and accept it — installing is not possible before that.
+2. Search for **CHMI Hydrology** and open it
+3. Select **Install** and confirm the version in the dialog
+4. The setup opens right after the installation — no restart is needed for a new install. See [Configuration](#configuration) below.
+
+No GitHub account is needed. Updates appear under **Settings → Updates**; restart Home Assistant after updating.
+
+> Already using HACS? Home Assistant migrates it to the Marketplace automatically on the first start after updating to 2026.11 — your installation and updates carry over.
+
+### Home Assistant 2026.10 or older – HACS
 
 1. Open HACS → Integrations
 2. Search for **CHMI Hydrology**
@@ -83,10 +94,12 @@ Home Assistant's Long-Term Statistics are hourly, not 10-minute, resolution.
 ## Configuration
 
 1. Go to **Settings → Integrations → Add Integration**
-2. Search for **CHMI Hydrology**
+2. Search for **chmi** or **hydrologie** — the integration is listed as **ČHMÚ Hydrologie**
 3. If your HA home location is set, nearby stations (within 10 km) are shown pre-selected automatically
 4. You can also search for any station by river or town name
 5. Select one or more stations and confirm — sensors are created automatically
+
+Shortcut that opens the setup directly (no searching): [![Add CHMI Hydrology to my Home Assistant](https://my.home-assistant.io/badges/config_flow_start.svg)](https://my.home-assistant.io/redirect/config_flow_start/?domain=chmi_hydrology)
 
 ![Nearby stations screen](docs/images/config_flow_nearby.png)
 
@@ -238,7 +251,7 @@ hours_to_show: 0
 
 ## Dashboard Cards
 
-> **Note:** Graph examples use [ApexCharts Card](https://github.com/RomRider/apexcharts-card) and status/tendency cards use [Mushroom Cards](https://github.com/piitaya/lovelace-mushroom). Both must be **installed separately via HACS** before use.
+> **Note:** Graph examples use [ApexCharts Card](https://github.com/RomRider/apexcharts-card) and status/tendency cards use [Mushroom Cards](https://github.com/piitaya/lovelace-mushroom). Both must be **installed separately** before use — via the Marketplace (Home Assistant 2026.11+) or HACS (older versions).
 
 > **Entity IDs:** Replace entity IDs in examples with your actual entity IDs. Find them in **Developer Tools → States** by filtering for your river or station name.
 

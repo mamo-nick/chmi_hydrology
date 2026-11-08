@@ -2,8 +2,8 @@
 
 🇨🇿 Česky | 🇬🇧 [English](README.md)
 
-[![hacs_badge](https://img.shields.io/badge/HACS-Custom-orange.svg)](https://github.com/hacs/integration)
-![version](https://img.shields.io/badge/version-1.1.0-blue)
+[![Marketplace](https://img.shields.io/badge/Marketplace-HACS%20default-41BDF5.svg)](https://www.home-assistant.io/integrations/marketplace/)
+![version](https://img.shields.io/badge/version-1.1.1-blue)
 
 Vlastní integrace pro Home Assistant umožňující sledování stavů řek, průtoků a povodňové aktivity pomocí otevřených dat **Českého hydrometeorologického ústavu (ČHMÚ)** — [opendata.chmi.cz](https://opendata.chmi.cz).
 
@@ -56,18 +56,29 @@ v Home Assistantu mají hodinové, ne 10minutové rozlišení.
 
 ## Požadavky
 
-- Home Assistant 2023.6 nebo novější
-- Nainstalovaný HACS
+- Home Assistant 2025.11 nebo novější
+- [Marketplace](https://www.home-assistant.io/integrations/marketplace/) (součást Home Assistant 2026.11 a novějšího) nebo HACS (Home Assistant 2026.10 a starší)
 - Přístup k internetu z instance HA
 
 ---
 
 ## Instalace
 
-### Přes HACS (doporučeno)
+### Home Assistant 2026.11 a novější – Marketplace (doporučeno)
+
+1. Otevři **Nastavení → Marketplace** (jen pro administrátory). Při prvním otevření si přečti upozornění a potvrď ho — dřív instalovat nelze.
+2. Vyhledej **CHMI Hydrology** a otevři ho
+3. Spusť instalaci tlačítkem pro instalaci a v dialogu potvrď verzi
+4. Po dokončení instalace se rovnou otevře nastavení — u nové instalace není potřeba restart. Viz [Konfigurace](#konfigurace) níže.
+
+Účet na GitHubu není potřeba. Aktualizace se zobrazují v **Nastavení → Aktualizace**; po aktualizaci restartuj Home Assistant.
+
+> Používáš už HACS? Home Assistant ho při prvním startu po aktualizaci na 2026.11 automaticky převede na Marketplace — instalace i aktualizace zůstanou zachovány.
+
+### Home Assistant 2026.10 a starší – HACS
 
 1. Otevři HACS → Integrace
-2. Vyhledej **ČHMÚ Hydrologie**
+2. Vyhledej **CHMI Hydrology**
 3. Klikni **Stáhnout**
 4. Restartuj Home Assistant
 
@@ -82,10 +93,12 @@ v Home Assistantu mají hodinové, ne 10minutové rozlišení.
 ## Konfigurace
 
 1. Jdi do **Nastavení → Integrace → Přidat integraci**
-2. Vyhledej **CHMI Hydrology**
+2. Vyhledej **chmi** nebo **hydrologie** — integrace se v seznamu jmenuje **ČHMÚ Hydrologie**
 3. Pokud máš v HA nastavenou polohu domova, nejbližší stanice (do 10 km) se zobrazí automaticky předvybrané
 4. Můžeš také vyhledat libovolnou stanici podle názvu řeky nebo obce
 5. Vyber jednu nebo více stanic a potvrď — senzory se vytvoří automaticky
+
+Zkratka, která otevře nastavení rovnou (bez hledání): [![Add CHMI Hydrology to my Home Assistant](https://my.home-assistant.io/badges/config_flow_start.svg)](https://my.home-assistant.io/redirect/config_flow_start/?domain=chmi_hydrology)
 
 ![Obrazovka s nejbližšími stanicemi](docs/images/config_flow_nearby.png)
 
@@ -237,7 +250,7 @@ hours_to_show: 0
 
 ## Karty dashboardu
 
-> **Poznámka:** Příklady grafů vyžadují [ApexCharts Card](https://github.com/RomRider/apexcharts-card) a karty stavu/tendence vyžadují [Mushroom Cards](https://github.com/piitaya/lovelace-mushroom). Obojí je nutno **samostatně nainstalovat přes HACS**.
+> **Poznámka:** Příklady grafů vyžadují [ApexCharts Card](https://github.com/RomRider/apexcharts-card) a karty stavu/tendence vyžadují [Mushroom Cards](https://github.com/piitaya/lovelace-mushroom). Obojí je nutno **samostatně nainstalovat** — přes Marketplace (Home Assistant 2026.11+) nebo HACS (starší verze).
 
 > **Entity ID:** Nahraď entity ID v příkladech svými skutečnými entity ID. Najdeš je ve **Vývojářské nástroje → Stavy** filtrací podle názvu řeky nebo stanice.
 
