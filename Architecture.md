@@ -10,20 +10,21 @@ CHMI Hydrology is a Home Assistant custom integration that periodically fetches 
 
 ```
 custom_components/chmi_hydrology/
-├── __init__.py          # Integration setup and teardown
-├── config_flow.py       # GUI configuration wizard
-├── coordinator.py       # Data fetching and caching
-├── sensor.py            # Sensor entity definitions
-├── const.py             # Constants and data mappings
-├── manifest.json        # HA integration manifest
-├── hacs.json            # HACS metadata (repository root)
-├── strings.json         # Translation template (EN)
-├── icons.json           # MDI icon definitions per entity
-├── icon.svg             # Integration logo (for HACS)
+├── __init__.py            # Integration setup and teardown
+├── config_flow.py         # GUI configuration wizard
+├── coordinator.py         # Data fetching and caching
+├── sensor.py              # Sensor entity definitions
+├── statistics_import.py   # 30-day history bootstrap into Long-Term Statistics
+├── const.py               # Constants and data mappings
+├── manifest.json          # HA integration manifest
+├── strings.json           # Translation template (EN)
+├── icons.json             # MDI icon definitions per entity
+├── icon.png               # Integration icon
+├── brand/                 # Brand images (icon, logo, dark variants, @2x)
 └── translations/
-    ├── en.json          # English translations
-    ├── cs.json          # Czech translations
-    └── sk.json          # Slovak translations
+    ├── en.json            # English translations
+    ├── cs.json            # Czech translations
+    └── sk.json            # Slovak translations
 ```
 
 ---
