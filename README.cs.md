@@ -3,7 +3,7 @@
 🇨🇿 Česky | 🇬🇧 [English](README.md)
 
 [![Marketplace](https://img.shields.io/badge/Marketplace-HACS%20default-41BDF5.svg)](https://www.home-assistant.io/integrations/marketplace/)
-![version](https://img.shields.io/badge/version-1.1.1-blue)
+![version](https://img.shields.io/badge/version-1.1.2-blue)
 
 Vlastní integrace pro Home Assistant umožňující sledování stavů řek, průtoků a povodňové aktivity pomocí otevřených dat **Českého hydrometeorologického ústavu (ČHMÚ)** — [opendata.chmi.cz](https://opendata.chmi.cz).
 

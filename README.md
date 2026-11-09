@@ -3,7 +3,7 @@
 🇬🇧 English | 🇨🇿 [Česky](README.cs.md)
 
 [![Marketplace](https://img.shields.io/badge/Marketplace-HACS%20default-41BDF5.svg)](https://www.home-assistant.io/integrations/marketplace/)
-![version](https://img.shields.io/badge/version-1.1.1-blue)
+![version](https://img.shields.io/badge/version-1.1.2-blue)
 
 Home Assistant custom integration for monitoring river water levels, flow rates and flood activity using open data from the **Czech Hydrometeorological Institute (CHMI)** — [opendata.chmi.cz](https://opendata.chmi.cz).
 

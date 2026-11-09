@@ -252,10 +252,11 @@ overwrite it."
 > history dialog and produced a snapshot that never grew past the original 30-day window. The
 > entity-linked approach above supersedes it.
 
-**Timezone handling:** CHMI timestamps are naive local time (CET/CEST). Each timestamp is
-assigned the `Europe/Prague` zone via `dt_util.get_time_zone()` (which resolves DST
-transitions automatically - no fixed offset is ever hardcoded), then converted to UTC via
-`dt_util.as_utc()` before being handed to the recorder, which requires timezone-aware UTC.
+**Timezone handling:** CHMI data files label every timestamp with a trailing `Z`, and the
+values are genuine UTC (verified against the age of the latest measurement in the live `now/`
+files, although CHMI's prose documentation mentions CET/CEST). `_to_utc` uses any timestamp
+carrying `Z` or an offset as UTC; only a timestamp with no marker falls back to Europe/Prague
+(zoneinfo handles DST - no fixed offset is ever hardcoded). `recent/` files are per UTC day.
 
 **Missing data:** Individual days that return HTTP 403/404 (e.g. a brand-new station, or the
 January rollover into `historical/`) are skipped; the bootstrap uses whatever days are

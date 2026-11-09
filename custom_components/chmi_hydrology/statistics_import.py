@@ -22,9 +22,12 @@ keeps extending this same history automatically forever once the entity
 starts reporting real state changes (which it does the moment it is set
 up) - no periodic "keep it fresh" task is required on our side.
 
-CHMI publishes timestamps in local Czech time (CET/CEST). All datetimes
-must be converted to timezone-aware UTC before being handed to
-``async_import_statistics`` - see the timezone handling notes below.
+CHMI's data files label every timestamp with a trailing ``Z`` (for example
+``2026-11-09T16:40:00Z``) and the values are genuine UTC - checked against
+the age of the latest measurement in the live ``now/`` files. (CHMI's prose
+documentation mentions CET/CEST, but the files themselves are UTC.) All
+datetimes must be timezone-aware UTC before being handed to
+``async_import_statistics``; see ``_to_utc`` below.
 """
 from __future__ import annotations
 
@@ -111,33 +114,30 @@ async def _fetch_recent_day(
         return None
 
 
-def _local_to_utc(dt_str: str) -> datetime | None:
-    """Convert a CHMI local-time (Europe/Prague) timestamp string to UTC.
+def _to_utc(dt_str: str) -> datetime | None:
+    """Convert a CHMI timestamp string to timezone-aware UTC.
 
-    CHMI timestamps are naive local time. We must:
-    1. Attach the Europe/Prague timezone (zoneinfo handles CET/CEST
-       transitions automatically - never hardcode a fixed offset).
-    2. Convert to UTC before handing off to async_import_statistics,
-       which requires timezone-aware UTC datetimes.
+    CHMI files label timestamps with ``Z`` and they are real UTC, so any
+    string carrying ``Z`` or an explicit offset is used as-is (converted to
+    UTC). Only a timestamp with no timezone marker at all falls back to
+    Europe/Prague local time, as CHMI's prose documentation describes
+    (zoneinfo handles CET/CEST transitions - never hardcode a fixed offset).
     """
     if not dt_str:
         return None
     try:
-        naive = datetime.fromisoformat(dt_str.replace("Z", ""))
+        parsed = datetime.fromisoformat(dt_str.replace("Z", "+00:00"))
     except ValueError:
         return None
+
+    if parsed.tzinfo is not None:
+        return dt_util.as_utc(parsed)
 
     tz = dt_util.get_time_zone(TIMEZONE_NAME)
     if tz is None:
         _LOGGER.warning("Could not resolve timezone %s", TIMEZONE_NAME)
         return None
-
-    if naive.tzinfo is None:
-        local_dt = naive.replace(tzinfo=tz)
-    else:
-        local_dt = naive
-
-    return dt_util.as_utc(local_dt)
+    return dt_util.as_utc(parsed.replace(tzinfo=tz))
 
 
 def _extract_samples(day_json: dict, ts_id: str) -> list[tuple[datetime, float]]:
@@ -161,7 +161,7 @@ def _extract_samples(day_json: dict, ts_id: str) -> list[tuple[datetime, float]]
                 fval = float(value)
             except (TypeError, ValueError):
                 continue
-            utc_dt = _local_to_utc(dt_str)
+            utc_dt = _to_utc(dt_str)
             if utc_dt is None:
                 continue
             samples.append((utc_dt, fval))
@@ -230,7 +230,9 @@ async def _async_bootstrap_history_inner(
     available_ts: list[str],
 ) -> bool:
     """Do the actual bootstrap work (see async_bootstrap_history)."""
-    today = dt_util.now(dt_util.get_time_zone(TIMEZONE_NAME)).date()
+    # recent/ files are per UTC day (a day's data starts at 00:00Z), so count
+    # days in UTC as well
+    today = dt_util.utcnow().date()
     days = [today - timedelta(days=i) for i in range(1, HISTORY_BOOTSTRAP_DAYS + 1)]
 
     # Fetch each day once, reuse across all time series for this station

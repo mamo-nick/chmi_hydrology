@@ -10,6 +10,21 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ---
 
+## [1.1.2] – 2026-11-09
+
+### Fixed
+- History bootstrap: the timestamps in CHMI data files are UTC (they carry a trailing `Z`), but the
+  bootstrap treated them as Europe/Prague local time. History imported by 1.1.0 and 1.1.1 is
+  therefore shifted 1 hour earlier in winter and 2 hours in summer. Timestamps with `Z` or an
+  explicit offset are now used as UTC; only a timestamp with no timezone marker falls back to
+  Europe/Prague. The bootstrap window now also counts UTC days, matching the daily `recent/` files.
+
+### Notes
+- Statistics already imported by 1.1.0 / 1.1.1 are **not** corrected automatically. New installs and
+  newly added stations get correctly aligned history.
+
+---
+
 ## [1.1.1] – 2026-11-05
 
 ### Changed
